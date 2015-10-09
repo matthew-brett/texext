@@ -1,0 +1,7 @@
+*.pyc
+*~
+build/
+.coverage
+dist/
+texext.egg-info/
+MANIFEST
