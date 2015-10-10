@@ -9,7 +9,7 @@ cache:
 
 env:
     global:
-        - DEPENDS="sphinx"
+        - DEPENDS="sphinx sympy"
         - PKG_NAME=texext
 
 python:
@@ -21,16 +21,14 @@ python:
 
 matrix:
   include:
-    # With sympy we can run doctests
     - python: 2.7
       env:
-        - DEPENDS="sphinx sympy"
         - COVERAGE=1
         - DOCTESTS=1
     # Absolute minimum dependencies
     - python: 2.7
       env:
-        - DEPENDS="sphinx==1.0.0"
+        - DEPENDS="sphinx==1.0.0 sympy==0.7.0"
 
 before_install:
     - source tools/travis_tools.sh
