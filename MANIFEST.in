@@ -1,3 +1,4 @@
 include versioneer.py
 include texext/_version.py
 include README.rst
+include LICENSE

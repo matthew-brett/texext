@@ -1,6 +1,6 @@
 """ Sphinx extension to execute sympy code generating LaTeX
 
-Copied more or less from sphinx/ext/mathbase.py.  That file has license:
+Uses code copied from sphinx/ext/mathbase.py.  That file has license:
 
     :copyright: Copyright 2007-2015 by the Sphinx team, see AUTHORS.
     :license: BSD, see LICENSE for details.
@@ -30,7 +30,8 @@ def eval_code(code_str, context):
 
 
 class MathCodeDirective(Directive):
-
+    """ Generate math environment from Sympy math expressions
+    """
     has_content = True
     required_arguments = 0
     optional_arguments = 0
@@ -83,7 +84,7 @@ def setup(app):
     setup.app = app
     setup.config = app.config
     setup.confdir = app.confdir
-    # Workspace for code run in SympyMath blocks
+    # Workspace for code run in Mathcode blocks
     setup.code_context = dict()
     app.add_directive('mathcode', MathCodeDirective)
     app.add_config_value('mathcode_use_plot_ns', False, 'env')

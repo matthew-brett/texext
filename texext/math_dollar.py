@@ -2,13 +2,11 @@
 # vi: set ft=python sts=4 ts=4 sw=4 et:
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ##
 #
-#   See COPYING file distributed along with the NiBabel package for the
+#   See LICENSE file distributed along with the texext package for the
 #   copyright and license terms.
 #
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ##
-""" Sphinx source processor to replace $a=b$ with :math:`a=b`math
-
-Originally by Ondrej Certik.
+""" Sphinx source processor to replace $a=b$ with :math:`a=b`
 """
 from warnings import warn
 

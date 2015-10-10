@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 ''' Installation script for texext package '''
 import sys
-from os.path import join as pjoin
 
 # For some commands, use setuptools.
 if len(set(('develop', 'bdist_egg', 'bdist_rpm', 'bdist', 'bdist_dumb',
@@ -16,10 +15,10 @@ import versioneer
 setup(name='texext',
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
-      description='Sphinx extensions for working with LaTex math',
-      author='Matthew Brett',
+      description='Sphinx extensions for working with LaTeX math',
+      author='Ondřej Čertík, Matthew Brett',
       author_email='matthew.brett@gmail.com',
-      maintainer='Matthew Brett',
+      maintainer='Matthew Brett, Ondřej Čertík',
       maintainer_email='matthew.brett@gmail.com',
       url='http://github.com/matthew-brett/texext',
       packages=['texext',
