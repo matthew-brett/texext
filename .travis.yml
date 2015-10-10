@@ -28,7 +28,7 @@ matrix:
     # Absolute minimum dependencies
     - python: 2.7
       env:
-        - DEPENDS="sphinx==1.0.0 sympy==0.7.0"
+        - DEPENDS="sphinx==1.1.3 sympy==0.7.0"
 
 before_install:
     - source tools/travis_tools.sh
