@@ -54,15 +54,15 @@ def dollars_to_math(source):
         return t
     # matches any line starting with whitespace
     s = re.sub(r"^([\t ]+.*)$", repl, s, flags=re.MULTILINE)
+    # Anything between double backticks
+    s = re.sub(r"(``[^`]*?``)", repl, s)
+    # Anything between single backticks
+    s = re.sub(r"(`[^`]*?`)", repl, s)
     # This searches for "$blah$" inside a pair of curly braces --
     # don't change these, since they're probably coming from a nested
     # math environment.  So for each match, we replace it with a temporary
     # string, and later on we substitute the original back.
     s = re.sub(r"({[^{}$]*\$[^{}$]*\$[^{}]*})", repl, s)
-    # matches dollars after backticks
-    s = re.sub(r"(`\$)", repl, s)
-    # matches dollars before backticks
-    s = re.sub(r"(\$`)", repl, s)
     # matches $...$
     dollars = re.compile(r"(?<!\$)(?<!\\)\$([^\$]+?)\$")
     # regular expression for \$

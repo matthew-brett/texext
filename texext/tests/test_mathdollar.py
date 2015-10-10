@@ -24,6 +24,9 @@ def test_dollars_to_math():
     # In general this is because dollars before or after backticks stay same
     assert_equal(d2m(['Here be `$a = b` math']), ['Here be `$a = b` math'])
     assert_equal(d2m(['Here be `a = b$` math']), ['Here be `a = b$` math'])
+    # And in general that's because everything between backticks stays the same
+    assert_equal(d2m(['Such as ``$1 $2 $3`` etc']), ['Such as ``$1 $2 $3`` etc'])
+    assert_equal(d2m(['Such as `$1 $2 $3` etc']), ['Such as `$1 $2 $3` etc'])
     # Can mix with and without backticks
     assert_equal(d2m(['Here `$a$` and $c$']), ['Here `$a$` and :math:`c`'])
     # Dollars inside curlies don't get replaced
