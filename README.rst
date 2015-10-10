@@ -74,3 +74,13 @@ To reset the context (namespaces), use the ``newcontext`` option::
         :newcontext:
 
         import sympy  # again
+
+If you would like mathcode to share a namespace with the matplotlib
+``plot_directive``, set::
+
+    # Config of mathcode directive
+    mathcode_use_plot_ns = True
+
+Remember that, by default, the ``plot_directive`` will clear the namespace
+context for each directive, so you may want to use the ``:context:`` option to
+the plot directive, most of the time.
