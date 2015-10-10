@@ -18,11 +18,9 @@ TINY_PAGES = pjoin(HERE, 'tinypages')
 def setup():
     # Check we have the sphinx-build command
     try:
-        ret = call(['sphinx-build', '--help'], stdout=PIPE, stderr=PIPE)
+        call(['sphinx-build', '--help'], stdout=PIPE, stderr=PIPE)
     except OSError:
-        raise SkipTest('Need sphinx-build on path for these tests')
-    if ret != 0:
-        raise RuntimeError('sphinx-build does not return 0')
+        raise SkipTest('Need sphinx-build on PATH for these tests')
 
 
 def file_same(file1, file2):
