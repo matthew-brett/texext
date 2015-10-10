@@ -24,6 +24,10 @@ setup(name='texext',
       url='http://github.com/matthew-brett/texext',
       packages=['texext',
                 'texext.tests'],
+      package_data = {'texext': [
+          'tests/tinypages/*.rst',
+          'tests/tinypages/*.py',
+          'tests/tinypages/_static/*']},
       license='BSD license',
       classifiers = [
             'Development Status :: 4 - Beta',
