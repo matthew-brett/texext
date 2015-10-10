@@ -14,8 +14,8 @@ Here $a = 1$, except ``$b = 2$``.
 .. mathcode::
 
     import sympy
-    a, b = sympy.symbols('a, b')
-    a * 10 + 2 * b
+    a, b, foo = sympy.symbols('a, b, q')
+    a * 10 + 2 * b + foo
 
 More text
 
@@ -23,3 +23,12 @@ More text
     :label: some-label
 
     a * 5 + 3 * b
+
+Yet more text
+
+.. mathcode::
+    :newcontext:
+
+    import sympy
+    foo, b = sympy.symbols('w, x')
+    foo * 5 + 3 * b

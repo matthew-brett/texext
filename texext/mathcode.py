@@ -55,7 +55,9 @@ class MathCodeDirective(Directive):
     def run(self):
         # Avoid depending on sympy unless running mathcode directive
         from sympy import latex
-        context = self.get_context(self.options.get('newcontext', False))
+        want_new = True if 'newcontext' in self.options else False
+        context = self.get_context(want_new)
+        print('want new', want_new, context)
         val = eval_code('\n'.join(self.content), context)
         if val is None:
             return []

@@ -79,10 +79,13 @@ class TestTinyPages(object):
              '<literal>$b = 2$</literal>.</paragraph>',
              '<literal_block xml:space="preserve">Here $a = 1$</literal_block>',
              '<displaymath docname="some_math" label="None" '
-             'latex="10 a + 2 b" nowrap="False"/>',
+             'latex="10 a + 2 b + q" nowrap="False"/>',
              '<paragraph>More text</paragraph>',
              '<target refid="equation-some-label"/>',
              '<displaymath docname="some_math" '
              """ids="[u'equation-some-label']" """
              'label="some-label" '
-             'latex="5 a + 3 b" nowrap="False"/>'])
+             'latex="5 a + 3 b" nowrap="False"/>',
+             '<paragraph>Yet more text</paragraph>',
+             '<displaymath docname="some_math" label="None" '
+             'latex="5 w + 3 x" nowrap="False"/>'])
