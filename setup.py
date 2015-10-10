@@ -28,7 +28,7 @@ setup(name='texext',
           'tests/tinypages/*.rst',
           'tests/tinypages/*.py',
           'tests/tinypages/_static/*']},
-      install_depends=['sphinx>=1.1.3'],
+      install_depends=['six', 'sphinx>=1.1.3'],
       license='BSD license',
       classifiers = [
             'Development Status :: 4 - Beta',

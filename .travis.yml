@@ -9,7 +9,7 @@ cache:
 
 env:
     global:
-        - DEPENDS="sphinx sympy"
+        - DEPENDS="six sphinx sympy"
         - PKG_NAME=texext
 
 python:
@@ -28,7 +28,7 @@ matrix:
     # Absolute minimum dependencies
     - python: 2.7
       env:
-        - DEPENDS="sphinx==1.1.3 sympy==0.7.0"
+        - DEPENDS="six==1.0.0 sphinx==1.1.3 sympy==0.7.0"
 
 before_install:
     - source tools/travis_tools.sh
