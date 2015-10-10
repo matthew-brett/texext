@@ -30,8 +30,8 @@ def test_dollars_to_math():
     # Can mix with and without backticks
     assert_equal(d2m(['Here `$a$` and $c$']), ['Here `$a$` and :math:`c`'])
     # Dollars inside curlies don't get replaced
-    assert_equal(d2m(['Now $f(n) = 0 \text{ if $n$ is prime}$ then']),
-                 ['Now :math:`f(n) = 0 \text{ if $n$ is prime}` then'])
+    assert_equal(d2m([r'Now $f(n) = 0 \text{ if $n$ is prime}$ then']),
+                 [r'Now :math:`f(n) = 0 \text{ if $n$ is prime}` then'])
     # Don't mathize dollars on lines with indents
     assert_equal(d2m([' $env']), [' $env'])
     assert_equal(d2m(['::\n  $env\n  $var']), ['::\n  $env\n  $var'])
