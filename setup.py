@@ -13,6 +13,10 @@ from distutils.core import setup
 
 import versioneer
 
+extra_setup_kwargs = ({} if 'setuptools' not in sys.modules else
+                      dict(install_requires=['six', 'sphinx>=1.1.3']))
+
+
 setup(name='texext',
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
@@ -28,7 +32,6 @@ setup(name='texext',
           'tests/tinypages/*.rst',
           'tests/tinypages/*.py',
           'tests/tinypages/_static/*']},
-      install_depends=['six', 'sphinx>=1.1.3'],
       license='BSD license',
       classifiers = [
             'Development Status :: 4 - Beta',
@@ -45,4 +48,5 @@ setup(name='texext',
             'Operating System :: MacOS',
         ],
       long_description = open('README.rst', 'rt').read(),
+      **extra_setup_kwargs
       )
