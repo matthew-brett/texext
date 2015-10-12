@@ -86,9 +86,26 @@ plot_directive`_, set the following in your ``conf.py``::
     # Config of mathcode directive
     mathcode_use_plot_ns = True
 
+.. note::
+
+    If you want to use the plot_directive context from within mathcode
+    directives, you need to list the plot_directive above the mathcode
+    directive in your sphinx extension list.  All the plot directives code
+    will get run before all the mathcode directive code.
+
+    Conversely, if you want to use the mathcode directive context from the
+    plot_directive, list mathcode first in your sphinx extension list.
+
 Remember that, by default, the ``plot_directive`` will clear the namespace
 context for each directive, so you may want to use the ``:context:`` option to
 the plot directive, most of the time.
+
+If you want to use a customized version of the plot_directive, supply the
+plot_directive module yourself, in the ``conf.py`` file::
+
+    # Config of mathcode directive
+    from my_path import plot_directive
+    mathcode_plot_directive = plot_directive
 
 To enable the mathcode directive, make sure that the ``texext`` package is on
 your Python path, and add ``textext.mathcode`` to your list of extensions in

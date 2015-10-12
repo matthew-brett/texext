@@ -43,9 +43,15 @@ class MathCodeDirective(Directive):
         'newcontext': directives.flag,
     }
 
+    def get_plot_directive(self):
+        plot_directive = setup.config.mathcode_plot_directive
+        if plot_directive is None:
+            from matplotlib.sphinxext import plot_directive
+        return plot_directive
+
     def get_context(self, newcontext=False):
         if setup.config.mathcode_use_plot_ns:
-            import plot_directive
+            plot_directive = self.get_plot_directive()
             if newcontext:
                 plot_directive.plot_context = dict()
             return plot_directive.plot_context
@@ -88,3 +94,4 @@ def setup(app):
     setup.code_context = dict()
     app.add_directive('mathcode', MathCodeDirective)
     app.add_config_value('mathcode_use_plot_ns', False, 'env')
+    app.add_config_value('mathcode_plot_directive', None, 'env')

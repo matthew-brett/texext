@@ -1,64 +1,20 @@
 """ Tests for tinypages build using sphinx extensions """
 
-import shutil
-import tempfile
 import pickle
 
 from os.path import (join as pjoin, dirname, isdir)
 
-from subprocess import call, Popen, PIPE
+from .pagebuilder import setup_module, PageBuilder
 
-from nose import SkipTest
 from nose.tools import assert_true, assert_equal
 
 HERE = dirname(__file__)
 TINY_PAGES = pjoin(HERE, 'tinypages')
 
 
-def setup():
-    # Check we have the sphinx-build command
-    try:
-        call(['sphinx-build', '--help'], stdout=PIPE, stderr=PIPE)
-    except OSError:
-        raise SkipTest('Need sphinx-build on PATH for these tests')
-
-
-def file_same(file1, file2):
-    with open(file1, 'rb') as fobj:
-        contents1 = fobj.read()
-    with open(file2, 'rb') as fobj:
-        contents2 = fobj.read()
-    return contents1 == contents2
-
-
-class TestTinyPages(object):
+class TestTinyPages(PageBuilder):
     # Test build and output of tinypages project
-
-    @classmethod
-    def setup_class(cls):
-        cls.page_build = tempfile.mkdtemp()
-        try:
-            cls.html_dir = pjoin(cls.page_build, 'html')
-            cls.doctree_dir = pjoin(cls.page_build, 'doctrees')
-            # Build the pages with warnings turned into errors
-            cmd = ['sphinx-build', '-W', '-b', 'html',
-                   '-d', cls.doctree_dir,
-                   TINY_PAGES,
-                   cls.html_dir]
-            proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
-            out, err = proc.communicate()
-        except Exception as e:
-            shutil.rmtree(cls.page_build)
-            raise e
-        if proc.returncode != 0:
-            shutil.rmtree(cls.page_build)
-            raise RuntimeError('sphinx-build failed with stdout:\n'
-                               '{0}\nstderr:\n{1}\n'.format(
-                                    out, err))
-
-    @classmethod
-    def teardown_class(cls):
-        shutil.rmtree(cls.page_build)
+    page_path = TINY_PAGES
 
     def test_some_math(self):
         assert_true(isdir(self.html_dir))
