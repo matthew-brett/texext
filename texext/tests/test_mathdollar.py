@@ -41,4 +41,22 @@ def test_dollars_to_math():
                  ['and some `$real dollars`.  More ``$real dollars``.'])
     assert_equal(d2m(
         ['\n\nSome $math dollars$.  More $math dollars$.\n']),
-        ['\n\nSome :math:`math dollars`.  More :math:`math dollars`.\n']),
+        ['\n\nSome :math:`math dollars`.  More :math:`math dollars`.\n'])
+    # Lots of backticks in a heading
+    assert_equal(d2m(
+        ['\nWord\n\nHeading\n```````\nMore ``stuff`` here']),
+        ['\nWord\n\nHeading\n```````\nMore ``stuff`` here'])
+    mysterious_problem="""\
+Some text short
+```````````````
+
+::
+
+    a
+    b
+    c
+    d
+
+``$H``
+"""
+    assert_equal(d2m([mysterious_problem]), [mysterious_problem])

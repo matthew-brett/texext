@@ -52,6 +52,9 @@ def dollars_to_math(source):
         return t
     # matches any line starting with whitespace
     s = re.sub(r"^([\t ]+.*)$", repl, s, flags=re.MULTILINE)
+    # Line entirely containing backticks ending with optional whitespace
+    # These happen in unusual heading underlines
+    s = re.sub(r"^(`+\s*)$", repl, s, flags=re.MULTILINE)
     # Anything between double backticks
     s = re.sub(r"(``[^`]*?``)", repl, s)
     # Anything between single backticks
