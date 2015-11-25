@@ -50,8 +50,6 @@ def dollars_to_math(source):
         t = "___XXX_REPL_%d___" % len(_data)
         _data.append((t, s))
         return t
-    # matches any line starting with whitespace
-    s = re.sub(r"^([\t ]+.*)$", repl, s, flags=re.MULTILINE)
     # Line entirely containing backticks ending with optional whitespace
     # These happen in unusual heading underlines
     s = re.sub(r"^(`+\s*)$", repl, s, flags=re.MULTILINE)
@@ -59,6 +57,8 @@ def dollars_to_math(source):
     s = re.sub(r"(``[^`]*?``)", repl, s)
     # Anything between single backticks
     s = re.sub(r"(`[^`]*?`)", repl, s)
+    # matches any line starting with whitespace
+    s = re.sub(r"^([\t ]+.*)$", repl, s, flags=re.MULTILINE)
     # This searches for "$blah$" inside a pair of curly braces --
     # don't change these, since they're probably coming from a nested
     # math environment.  So for each match, we replace it with a temporary
