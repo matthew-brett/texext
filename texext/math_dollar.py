@@ -15,9 +15,25 @@ import re
 from sphinx.errors import ExtensionError
 
 
-def dollars_to_math(source):
+def d2m_source(source):
     r"""
-    Replace dollar signs with backticks.
+    Replace dollar signs with backticks in string within `source` list
+
+    See: :func:`dollars_to_math` for details.
+
+    Parameters
+    ----------
+    source : sequence of str
+        Sequence of strings, usually read from a ReST source file.  `source`
+        modified in place.  There should only be one element, a single string.
+    """
+    s = "\n".join(source)
+    source[:] = [dollars_to_math(s)]
+
+
+def dollars_to_math(rst_str):
+    """
+    Replace dollar signs with backticks in string `rst_str`
 
     More precisely, do a regular expression search.  Replace a plain dollar
     sign ($) by a backtick (`).  Replace an escaped dollar sign (\$) by a
@@ -37,13 +53,17 @@ def dollars_to_math(source):
 
     Parameters
     ----------
-    source : sequence of str
-        Sequence of strings, usually read from a ReST source file.  `source`
-        modified in place.  There should only be one element, a single string.
+    rst_str : str
+        String, usually read from a ReST source file.
+
+    Returns
+    -------
+    out_str : str
+        Possibly modified string after replacing math dollar markers.
     """
-    s = "\n".join(source)
-    if s.find("$") == -1:
-        return
+    if rst_str.find("$") == -1:
+        return rst_str
+    out_str = rst_str
     _data = []
     def repl(matchobj):
         s = matchobj.group(0)
@@ -52,38 +72,37 @@ def dollars_to_math(source):
         return t
     # Line entirely containing backticks ending with optional whitespace
     # These happen in unusual heading underlines
-    s = re.sub(r"^(`+\s*)$", repl, s, flags=re.MULTILINE)
+    out_str = re.sub(r"^(`+\s*)$", repl, out_str, flags=re.MULTILINE)
     # Anything between double backticks
-    s = re.sub(r"(``[^`]*?``)", repl, s)
+    out_str = re.sub(r"(``[^`]*?``)", repl, out_str)
     # Anything between single backticks
-    s = re.sub(r"(`[^`]*?`)", repl, s)
+    out_str = re.sub(r"(`[^`]*?`)", repl, out_str)
     # matches any line starting with whitespace
-    s = re.sub(r"^([\t ]+.*)$", repl, s, flags=re.MULTILINE)
+    out_str = re.sub(r"^([\t ]+.*)$", repl, out_str, flags=re.MULTILINE)
     # This searches for "$blah$" inside a pair of curly braces --
     # don't change these, since they're probably coming from a nested
     # math environment.  So for each match, we replace it with a temporary
     # string, and later on we substitute the original back.
-    s = re.sub(r"({[^{}$]*\$[^{}$]*\$[^{}]*})", repl, s)
+    out_str = re.sub(r"({[^{}$]*\$[^{}$]*\$[^{}]*})", repl, out_str)
     # matches $...$
     dollars = re.compile(r"(?<!\$)(?<!\\)\$([^\$]+?)\$")
     # regular expression for \$
     slashdollar = re.compile(r"\\\$")
-    s = dollars.sub(r":math:`\1`", s)
-    s = slashdollar.sub(r"$", s)
+    out_str = dollars.sub(r":math:`\1`", out_str)
+    out_str = slashdollar.sub(r"$", out_str)
     # Change everything back that we pulled out before our dollar replacement.
     # Put back in reverse order of removal.
     for marker, content in _data[::-1]:
-        s = s.replace(marker, content)
-    # now save results in "source"
-    source[:] = [s]
+        out_str = out_str.replace(marker, content)
+    return out_str
 
 
 def process_dollars(app, docname, source):
-    dollars_to_math(source)
+    d2m_source(source)
 
 
 def mathdollar_docstrings(app, what, name, obj, options, lines):
-    dollars_to_math(lines)
+    d2m_source(lines)
 
 
 def setup(app):
