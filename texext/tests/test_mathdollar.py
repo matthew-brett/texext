@@ -1,7 +1,7 @@
 """ Testing math_dollar module
 """
 
-from ..math_dollar import d2m_source, dollars_to_math
+from ..math_dollar import d2m_source, rst_dollars_to_math
 
 from nose.tools import (assert_true, assert_false, assert_raises,
                         assert_equal, assert_not_equal)
@@ -16,7 +16,7 @@ def source_shim(in_str):
 
 def test_dollars_to_math():
     # Simple inline math
-    d2m = dollars_to_math
+    d2m = rst_dollars_to_math
     # For a few simple inputs, test list and string versions
     for f in (source_shim, d2m):
         assert_equal(f('Here be $a = b$ math'), 'Here be :math:`a = b` math')
