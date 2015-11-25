@@ -10,6 +10,10 @@ Here $c = 3$, except ``$d = 4$``.
 
     Here $e = 5$
 
+* A list item containing
+  $f = 6$ some mathematics.
+* A list item containing ``a literal across
+  lines`` and also $g = 7$ some mathematics.
 
 .. mathcode::
 

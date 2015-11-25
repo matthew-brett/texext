@@ -9,10 +9,13 @@
 """ Sphinx source processor to replace $a=b$ with :math:`a=b`
 """
 from warnings import warn
-
 import re
+from functools import partial
 
+from docutils.utils import unescape
+from docutils.nodes import Text, SparseNodeVisitor, paragraph
 from sphinx.errors import ExtensionError
+from sphinx.ext.mathbase import math
 
 
 def d2m_source(source):
@@ -144,8 +147,49 @@ def rst_dollars_to_math(rst_str,
     return rst_protector.restore(out_str)
 
 
-def process_dollars(app, docname, source):
-    d2m_source(source)
+MATH_MARKER = "__D2M__"
+txt_dollars_to_math = partial(rst_dollars_to_math,
+                              protector=in_dollars_protector,
+                              dollar_repl=MATH_MARKER + r"\1" + MATH_MARKER)
+
+
+class MathDollarMaker(SparseNodeVisitor):
+
+    def visit_Text(self, node):
+        # Avoid literals etc
+        if not isinstance(node.parent, paragraph):
+            return
+        in_str = node.astext()
+        processed = txt_dollars_to_math(in_str)
+        if MATH_MARKER not in processed:
+            return
+        parts = processed.split(MATH_MARKER)
+        new_nodes = []
+        for i, part in enumerate(parts):
+            if part == '':
+                continue
+            if i % 2:  # See sphinx.ext.mathbase
+                latex = unescape(part, restore_backslashes=True)
+                new_node = math(latex=latex)
+            else:
+                new_node = Text(part, part)
+            new_node.parent = node.parent
+            new_nodes.append(new_node)
+        # Put new nodes into parent's list of children
+        new_children = []
+        for child in node.parent.children:
+            if not child is node:
+                new_children.append(child)
+            else:
+                new_children += new_nodes
+        node.parent.children = new_children
+
+    def unknown_visit(self, node):
+        pass
+
+
+def dt_process_dollars(app, doctree):
+    doctree.walk(MathDollarMaker(doctree.document))
 
 
 def mathdollar_docstrings(app, what, name, obj, options, lines):
@@ -153,8 +197,10 @@ def mathdollar_docstrings(app, what, name, obj, options, lines):
 
 
 def setup(app):
-    app.connect("source-read", process_dollars)
+    # Process pages after parsing ReST to avoid false positives
+    app.connect("doctree-read", dt_process_dollars)
     try:
+        # We have to process docstrings as text, it's the Wild Wild West.
         app.connect('autodoc-process-docstring', mathdollar_docstrings)
     except ExtensionError:
         warn("Need autodoc extension loaded for math_dollar to work on "
