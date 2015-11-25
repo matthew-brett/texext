@@ -4,11 +4,11 @@ Some math
 
 Here $a = 1$, except `$b = 2$`.
 
-Here $a = 1$, except ``$b = 2$``.
+Here $c = 3$, except ``$d = 4$``.
 
 ::
 
-    Here $a = 1$
+    Here $e = 5$
 
 
 .. mathcode::
