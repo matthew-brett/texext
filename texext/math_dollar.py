@@ -44,11 +44,11 @@ def dollars_to_math(source):
     s = "\n".join(source)
     if s.find("$") == -1:
         return
-    _data = {}
+    _data = []
     def repl(matchobj):
         s = matchobj.group(0)
         t = "___XXX_REPL_%d___" % len(_data)
-        _data[t] = s
+        _data.append((t, s))
         return t
     # matches any line starting with whitespace
     s = re.sub(r"^([\t ]+.*)$", repl, s, flags=re.MULTILINE)
@@ -70,9 +70,10 @@ def dollars_to_math(source):
     slashdollar = re.compile(r"\\\$")
     s = dollars.sub(r":math:`\1`", s)
     s = slashdollar.sub(r"$", s)
-    # change everything back that we pulled out before our dollar replacement
-    for r in _data:
-        s = s.replace(r, _data[r])
+    # Change everything back that we pulled out before our dollar replacement.
+    # Put back in reverse order of removal.
+    for marker, content in _data[::-1]:
+        s = s.replace(marker, content)
     # now save results in "source"
     source[:] = [s]
 

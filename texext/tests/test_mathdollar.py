@@ -60,3 +60,8 @@ Some text short
 ``$H``
 """
     assert_equal(d2m([mysterious_problem]), [mysterious_problem])
+    # Test case where text with markers may be substituted with another marker.
+    # This depends on dictionary ordering, so will only sometimes catch errors.
+    assert_equal(d2m(
+        ['She `is in ``her own`` new ``world``, always` leaving']),
+        ['She `is in ``her own`` new ``world``, always` leaving'])
