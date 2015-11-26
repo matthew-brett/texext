@@ -92,8 +92,6 @@ rst_protector = StringProtector(
     re.compile(r"(``[^`]*?``)"),
     # Anything between single backticks
     re.compile(r"(`[^`]*?`)"),
-    # matches any line starting with whitespace
-    re.compile(r"^([\t ]+.*)$", flags=re.MULTILINE),
     )
 ) + in_dollars_protector
 

@@ -36,11 +36,11 @@ def test_dollars_to_math():
     # Dollars inside curlies don't get replaced
     assert_equal(d2m(r'Now $f(n) = 0 \text{ if $n$ is prime}$ then'),
                  r'Now :math:`f(n) = 0 \text{ if $n$ is prime}` then')
-    # Don't mathize dollars on lines with indents
-    assert_equal(d2m(' $env'), ' $env')
-    assert_equal(d2m('::\n  $env\n  $var'), '::\n  $env\n  $var')
-    assert_equal(d2m('::\n  $env\n\nHere $b$ there'),
-                 '::\n  $env\n\nHere :math:`b` there')
+    # We do now mathize dollars on lines with indents
+    assert_equal(d2m(' $env$'), ' :math:`env`')
+    assert_equal(d2m('::\n  $env\n  $var'), '::\n  :math:`env\n  `var')
+    assert_equal(d2m('::\n  $env$\n\nHere $b$ there'),
+                 '::\n  :math:`env`\n\nHere :math:`b` there')
     assert_equal(d2m('and some `$real dollars`.  More ``$real dollars``.'),
                  'and some `$real dollars`.  More ``$real dollars``.')
     assert_equal(d2m(
@@ -69,3 +69,11 @@ Some text short
     assert_equal(d2m(
         'She `is in ``her own`` new ``world``, always` leaving'),
         'She `is in ``her own`` new ``world``, always` leaving')
+    assert_equal(d2m(
+        "* A list item containing\n  $f = 6$ some mathematics."),
+        "* A list item containing\n  :math:`f = 6` some mathematics.")
+    assert_equal(d2m(
+        "* A list item containing ``a literal across\n  lines`` and also "
+        "$g = 7$ some mathematics."),
+        "* A list item containing ``a literal across\n  lines`` and also "
+        ":math:`g = 7` some mathematics.")
