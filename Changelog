@@ -1,0 +1,53 @@
+.. -*- mode: rst -*-
+.. vim:ft=rst
+
+.. _changelog:
+
+############################
+Texext development Changelog
+############################
+
+Texext contains some utilities for working with LaTeX math in Sphinx.
+
+Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
+(OC) along with an extension for working with Sympy math by Matthew Brett
+(MB).
+
+********
+Releases
+********
+
+0.3.0
+=====
+
+Bugfix release:
+
+* Use different method to get text to parse in Sphinx pages.  We were
+  previously getting the raw ReST text and trying to do partial parsing with
+  regexps, but this was getting brittle, and there were already some nasty
+  bugs to do with the order we were putting back stuff we had taken out.
+  Instead, look for math dollars in the parsed doctree, so we can avoid
+  things like literal blocks via the ReST parser.  We continue to use the
+  regex parser on docstrings though;
+* Deal with multiple backticks used as sphinx section underlines, confusing
+  the regex parser;
+* No longer exclude all indented lines from math dollar parsing, because it's
+  fairly common to have math dollars in list items, which are indented;
+* Extend tests to cover math in list elements;
+
+0.2.0
+=====
+
+Bugfix release:
+
+* Fix use of custom plot_directive;
+* Some testing fixes;
+
+0.1.0
+=====
+
+Initial release:
+
+* Refactored ``math_dollar`` extension to exclude more potential false
+  positives, add tests;
+* Add ``mathcode`` directive.
