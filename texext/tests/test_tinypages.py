@@ -53,5 +53,7 @@ class TestTinyPages(PageBuilder):
             'latex="5 a + 3 b" nowrap="False"/>\n'
             '<paragraph>Yet more text</paragraph>\n'
             '<displaymath docname="some_math" label="None" '
-            'latex="5 w + 3 x" nowrap="False"/>',
+            'latex="5 w + 3 x" nowrap="False"/>\n'
+            r'<paragraph>Math with <math latex="\beta"/> '
+            'a backslash.</paragraph>',
             tree_str)

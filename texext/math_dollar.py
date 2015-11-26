@@ -157,7 +157,7 @@ class MathDollarMaker(SparseNodeVisitor):
         # Avoid literals etc
         if not isinstance(node.parent, paragraph):
             return
-        in_str = node.astext()
+        in_str = node.rawsource
         processed = txt_dollars_to_math(in_str)
         if MATH_MARKER not in processed:
             return

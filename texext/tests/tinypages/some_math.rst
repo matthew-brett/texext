@@ -36,3 +36,5 @@ Yet more text
     import sympy
     foo, b = sympy.symbols('w, x')
     foo * 5 + 3 * b
+
+Math with $\beta$ a backslash.
