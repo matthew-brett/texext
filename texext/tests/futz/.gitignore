@@ -1,0 +1,6 @@
+html/
+proj1/
+*.rst
+*.tpl
+*.ipynb
+*_files/
