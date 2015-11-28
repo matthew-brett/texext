@@ -38,3 +38,8 @@ Yet more text
     foo * 5 + 3 * b
 
 Math with $\beta$ a backslash.
+
+A protected white\ space with $dollars$.
+
+Some \* asterisks \*.  $dollars$. A line \
+break.  Protected \\ backslash.  Protected \n in $a$ line.

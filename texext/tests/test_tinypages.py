@@ -54,6 +54,14 @@ class TestTinyPages(PageBuilder):
             '<paragraph>Yet more text</paragraph>\n'
             '<displaymath docname="some_math" label="None" '
             'latex="5 w + 3 x" nowrap="False"/>\n'
-            r'<paragraph>Math with <math latex="\beta"/> '
-            'a backslash.</paragraph>',
+            r'<paragraph>Math with <math latex="\beta"/> a backslash.'
+            '</paragraph>\n'
+            '<paragraph>'  # Now, what happens to backslashes?
+            'A protected whitespace with <math latex="dollars"/>.'
+            '</paragraph>\n'
+            '<paragraph>'
+            'Some * asterisks *.  <math latex="dollars"/>. '
+            'A line break.  Protected \ backslash.  '
+            'Protected n in <math latex="a"/> line.'
+            '</paragraph>',
             tree_str)

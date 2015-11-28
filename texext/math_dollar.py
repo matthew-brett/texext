@@ -12,7 +12,7 @@ from warnings import warn
 import re
 from functools import partial
 
-from docutils.utils import unescape
+from docutils.utils import escape2null, unescape
 from docutils.nodes import Text, SparseNodeVisitor, paragraph
 from sphinx.errors import ExtensionError
 from sphinx.ext.mathbase import math
@@ -164,13 +164,14 @@ class MathDollarMaker(SparseNodeVisitor):
         parts = processed.split(MATH_MARKER)
         new_nodes = []
         for i, part in enumerate(parts):
+            with_nulls = escape2null(part)
+            to_backslashes = unescape(with_nulls, restore_backslashes=True)
             if part == '':
                 continue
             if i % 2:  # See sphinx.ext.mathbase
-                latex = unescape(part, restore_backslashes=True)
-                new_node = math(latex=latex)
+                new_node = math(latex=to_backslashes)
             else:
-                new_node = Text(part, part)
+                new_node = Text(unescape(with_nulls), to_backslashes)
             new_node.parent = node.parent
             new_nodes.append(new_node)
         # Put new nodes into parent's list of children
