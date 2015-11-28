@@ -17,6 +17,13 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.3.1
+=====
+
+Bugfix release:
+
+* Fixed processing of backslash escape characters in ReST input with dollars.
+
 0.3.0
 =====
 
