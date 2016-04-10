@@ -100,12 +100,19 @@ Remember that, by default, the ``plot_directive`` will clear the namespace
 context for each directive, so you may want to use the ``:context:`` option to
 the plot directive, most of the time.
 
-If you want to use a customized version of the plot_directive, supply the
-plot_directive module yourself, in the ``conf.py`` file::
+If you want to work with a customized version of the plot_directive, you need
+to supply the name of the plot context dictionary for the plot directive, as a
+string.  For example, if you have a custom plot directive module importable as
+``import my_path.plot_directive``, with the plot context in
+``my_path.plot_directive.plot_context``, then your ``conf.py`` should have
+lines like these::
 
     # Config of mathcode directive
-    from my_path import plot_directive
-    mathcode_plot_directive = plot_directive
+    mathcode_plot_context = "my_path.plot_directive.plot_context"
+
+The plot context is a string rather than the attribute itself in order to let
+sphinx pickle the configuration between runs.  This allows sphinx to avoid
+building pages that have not changed between calls to ``sphinx-build``.
 
 To enable the mathcode directive, make sure that the ``texext`` package is on
 your Python path, and add ``textext.mathcode`` to your list of extensions in

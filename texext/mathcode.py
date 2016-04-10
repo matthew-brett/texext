@@ -6,6 +6,8 @@ Uses code copied from sphinx/ext/mathbase.py.  That file has license:
     :license: BSD, see LICENSE for details.
 """
 
+import warnings
+
 from ast import parse, Expr, Expression
 
 from docutils import nodes
@@ -46,18 +48,37 @@ class MathCodeDirective(Directive):
     def get_plot_directive(self):
         plot_directive = setup.config.mathcode_plot_directive
         if plot_directive is None:
-            from matplotlib.sphinxext import plot_directive
+            return None
+        warnings.warn("mathcode_plot_directive deprecated; "
+                      "please use mathcode_plot_context instead",
+                      FutureWarning)
         return plot_directive
+
+    def get_plot_context(self):
+        # First try mathcode_plot_context dictionary
+        plot_context = setup.config.mathcode_plot_context
+        if plot_context is not None:
+            # Plot context is a string naming a module attribute
+            parts = plot_context.split('.')
+            mod_name, el_name = '.'.join(parts[:-1]), parts[-1]
+            mod = __import__(mod_name, globals(), locals(), el_name)
+            return getattr(mod, el_name)
+        # Next try getting dictionary from deprecated mathcode_plot_directive
+        plot_directive = self.get_plot_directive()
+        if plot_directive is not None:
+            return plot_directive.plot_context
+        # Default to matplotlib plot_context dictionary
+        from matplotlib.sphinxext.plot_directive import plot_context
+        return plot_context
 
     def get_context(self, newcontext=False):
         if setup.config.mathcode_use_plot_ns:
-            plot_directive = self.get_plot_directive()
-            if newcontext:
-                plot_directive.plot_context = dict()
-            return plot_directive.plot_context
+            plot_context = self.get_plot_context()
+        else:
+            plot_context = setup.code_context
         if newcontext:
-            setup.code_context = dict()
-        return setup.code_context
+            plot_context.clear()
+        return plot_context
 
     def run(self):
         # Avoid depending on sympy unless running mathcode directive
@@ -94,4 +115,6 @@ def setup(app):
     setup.code_context = dict()
     app.add_directive('mathcode', MathCodeDirective)
     app.add_config_value('mathcode_use_plot_ns', False, 'env')
+    app.add_config_value('mathcode_plot_context', None, 'env')
+    # mathcode_plot_directive deprecated; prefer mathcode_plot_context
     app.add_config_value('mathcode_plot_directive', None, 'env')
