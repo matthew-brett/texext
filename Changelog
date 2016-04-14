@@ -17,6 +17,17 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.3.2
+=====
+
+Configuration change:
+
+* Changed method of pointing mathcode directive at the context for plots.  The
+  old method attached a module to the sphinx config, making the config
+  impossible to pickle, so forcing a rebuild of all pages for each call to
+  sphinx-build.  The new method uses a string that we use to import the
+  attribute containing the plot context.
+
 0.3.1
 =====
 
