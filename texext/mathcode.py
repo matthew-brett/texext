@@ -4,6 +4,76 @@ Uses code copied from sphinx/ext/mathbase.py.  That file has license:
 
     :copyright: Copyright 2007-2015 by the Sphinx team, see AUTHORS.
     :license: BSD, see LICENSE for details.
+
+See README file for more information.
+
+The MathCodeDirective accepts a Sympy expression as input.  It returns the
+result of that expression as LaTeX included in a ``..math`` block.
+
+This allows you do generate LaTeX dynamically.  For example:
+
+    .. mathcode::
+
+        import sympy
+        a, b = sympy.symbols('a, b')
+        a * 10 + 2 * b
+
+The directive takes the result of ``sympy.latex(a * 10 + 2 * b)`` and puts it
+inside a math directive in the ReST output.
+
+By default the mathcode directives keep context from previous mathcode
+directives, so you can use defined variables and functions.
+
+You might want to clear the context for the first mathcode directive in a page,
+by adding the ``:newcontext:`` option:
+
+    .. mathcode::
+        :newcontext:
+
+        import sympy  # sympy no longer defined
+        c, d = sympy.symbols('a, b')
+        return c + d
+
+If the last expression in the mathcode block is not an expression, the context
+gets updated, but the extension generates no math directive to the output.
+This allows you to have blocks that fill in calculations without rendering to
+the page.  For example, this generates no output::
+
+    .. mathcode::
+
+        expr = a * 4
+
+If you would like mathcode to share a namespace with the matplotlib ``plot``
+directive, set the following in your ``conf.py``::
+
+    # Config of mathcode directive
+    mathcode_use_plot_ns = True
+
+If you want to use the plot_directive context from within mathcode directives,
+you need to list the plot_directive above the mathcode directive in your sphinx
+extension list.  All the plot directives code will get run before all the
+mathcode directive code.
+
+Conversely, if you want to use the mathcode directive context from the
+plot_directive, list mathcode first in your sphinx extension list.
+
+Remember that, by default, the matplotlib ``plot`` directive will clear the
+namespace context for each directive, so you may want to use the ``:context:``
+option to the plot directive, most of the time.
+
+If you want to work with a customized version of the plot_directive, you need
+to supply the name of the plot context dictionary for the plot directive, as a
+string.  For example, if you have a custom plot directive module importable as
+``import my_path.plot_directive``, with the plot context in
+``my_path.plot_directive.plot_context``, then your ``conf.py`` should have
+lines like these::
+
+    # Config of mathcode directive
+    mathcode_plot_context = "my_path.plot_directive.plot_context"
+
+The plot context is a string rather than the attribute itself in order to let
+sphinx pickle the configuration between runs.  This allows sphinx to avoid
+building pages that have not changed between calls to ``sphinx-build``.
 """
 
 import warnings
