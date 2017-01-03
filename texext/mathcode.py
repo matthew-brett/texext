@@ -85,7 +85,7 @@ from docutils.parsers.rst import directives
 
 from sphinx.util.compat import Directive
 from sphinx.util.nodes import set_source_info
-from sphinx.ext.mathbase import displaymath
+from sphinx.ext.mathbase import MathDirective, displaymath
 
 
 def eval_code(code_str, context):
@@ -101,13 +101,10 @@ def eval_code(code_str, context):
     return eval(to_eval, None, context)
 
 
-class MathCodeDirective(Directive):
+class MathCodeDirective(MathDirective):
     """ Generate math environment from Sympy math expressions
     """
-    has_content = True
-    required_arguments = 0
     optional_arguments = 0
-    final_argument_whitespace = True
     option_spec = {
         'label': directives.unchanged,
         'name': directives.unchanged,
@@ -158,23 +155,8 @@ class MathCodeDirective(Directive):
         val = eval_code('\n'.join(self.content), context)
         if val is None:
             return []
-        node = displaymath()
-        node['latex'] = latex(val)
-        node['label'] = self.options.get('name', None)
-        node['number'] = None
-        if node['label'] is None:
-            node['label'] = self.options.get('label', None)
-        node['nowrap'] = 'nowrap' in self.options
-        node['docname'] = self.state.document.settings.env.docname
-        ret = [node]
-        set_source_info(self, node)
-        if hasattr(self, 'src'):
-            node.source = self.src
-        if node['label']:
-            tnode = nodes.target('', '', ids=['equation-' + node['label']])
-            self.state.document.note_explicit_target(tnode)
-            ret.insert(0, tnode)
-        return ret
+        self.content = latex(val).splitlines()
+        return super(MathCodeDirective, self).run()
 
 
 def setup(app):

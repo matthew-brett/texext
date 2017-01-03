@@ -43,3 +43,5 @@ A protected white\ space with $dollars$.
 
 Some \* asterisks \*.  $dollars$. A line \
 break.  Protected \\ backslash.  Protected \n in $a$ line.
+
+Refers to equation at :eq:`some-label`.

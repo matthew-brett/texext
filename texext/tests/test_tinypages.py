@@ -52,7 +52,7 @@ class TestTinyPages(PageBuilder):
             '<displaymath docname="some_math" '
             """ids="[{u_if_py2}'equation-some-label']" """
             'label="some-label" '
-            'latex="5 a + 3 b" nowrap="False" number="None"/>\n'
+            'latex="5 a + 3 b" nowrap="False" number="1"/>\n'
             '<paragraph>Yet more text</paragraph>\n'
             '<displaymath docname="some_math" label="None" '
             'latex="5 w + 3 x" nowrap="False" number="None"/>\n'
@@ -64,6 +64,13 @@ class TestTinyPages(PageBuilder):
             '<paragraph>'
             'Some * asterisks *.  <math latex="dollars"/>. '
             'A line break.  Protected \ backslash.  '
-            'Protected n in <math latex="a"/> line.'
-            '</paragraph>').format(u_if_py2='' if six.PY3 else 'u')
+            'Protected n in <math latex="a"/> line.</paragraph>\n'
+            # Do labels get set as targets?
+            '<paragraph>Refers to equation at '
+            '<pending_xref refdoc="some_math" refdomain="math" '
+            'refexplicit="False" reftarget="some-label" '
+            'reftype="eq" refwarn="True">'
+            '<literal classes="xref eq">some-label</literal>'
+            '</pending_xref>.</paragraph>'
+        ).format(u_if_py2='' if six.PY3 else 'u')
         assert_equal(expected, tree_str)
