@@ -17,6 +17,16 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.3.3
+=====
+
+Bugfix release:
+
+* Mathcode creates a displaymath node, but was not adding a ``number``
+  attribute to the node.  ``sphinx.ext.mathjax`` later expects to see
+  ``number`` as a node attribute (but it can be None).  Set ``number`` to None
+  by default.
+
 0.3.2
 =====
 
