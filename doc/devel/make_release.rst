@@ -54,8 +54,8 @@ Releasing texext
   `setuptools intro`_::
 
     git clean -fxd
-    python setup.py register
-    python setup.py sdist --formats=gztar,zip upload --sign
+    python setup.py sdist --formats=zip
+    twine upload -s dist/texext*.zip
 
 * Upload the release commit and tag to github::
 
