@@ -15,8 +15,6 @@ env:
         - EXTRA_WHEELS=https://nipy.bic.berkeley.edu/manylinux
 
 python:
-    - 2.6
-    - 3.2
     - 3.3
     - 3.4
     - 3.5
@@ -41,6 +39,7 @@ matrix:
 
 before_install:
     - source tools/travis_tools.sh
+    - pip install -U virtualenv
     - virtualenv --python=python venv
     - source venv/bin/activate
     - python -m pip install --upgrade pip wheel
