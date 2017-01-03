@@ -22,7 +22,7 @@ class TestTinyPages(PageBuilder):
         doctree = self.get_doctree('some_math')
         assert_equal(len(doctree.document), 1)
         tree_str = self.doctree2str(doctree)
-        expected = (
+        expected_base = (
             '<title>Some math</title>\n'
             '<paragraph>Here <math latex="a = 1"/>, except '
             '<title_reference>$b = 2$</title_reference>.</paragraph>\n'
@@ -46,19 +46,19 @@ class TestTinyPages(PageBuilder):
             '</list_item>'
             '</bullet_list>\n'
             '<displaymath docname="some_math" label="None" '
-            'latex="10 a + 2 b + q" nowrap="False" number="None"/>\n'
+            'latex="10 a + 2 b + q" nowrap="False"{number_default}/>\n'
             '<paragraph>More text</paragraph>\n'
             '<target refid="equation-some-label"/>\n'
             '<displaymath docname="some_math" '
             """ids="[{u_if_py2}'equation-some-label']" """
             'label="some-label" '
-            'latex="5 a + 3 b" nowrap="False" number="1"/>\n'
+            'latex="5 a + 3 b" nowrap="False"{eq_number}/>\n'
             '<paragraph>Yet more text</paragraph>\n'
             '<displaymath docname="some_math" label="None" '
-            'latex="5 w + 3 x" nowrap="False" number="None"/>\n'
+            'latex="5 w + 3 x" nowrap="False"{number_default}/>\n'
             r'<paragraph>Math with <math latex="\beta"/> a backslash.'
             '</paragraph>\n'
-            '<paragraph>'  # Now, what happens to backslashes?
+            '<paragraph>'  # What happens to backslashes?
             'A protected whitespace with <math latex="dollars"/>.'
             '</paragraph>\n'
             '<paragraph>'
@@ -66,11 +66,29 @@ class TestTinyPages(PageBuilder):
             'A line break.  Protected \ backslash.  '
             'Protected n in <math latex="a"/> line.</paragraph>\n'
             # Do labels get set as targets?
-            '<paragraph>Refers to equation at '
-            '<pending_xref refdoc="some_math" refdomain="math" '
-            'refexplicit="False" reftarget="some-label" '
-            'reftype="eq" refwarn="True">'
-            '<literal classes="xref eq">some-label</literal>'
-            '</pending_xref>.</paragraph>'
-        ).format(u_if_py2='' if six.PY3 else 'u')
-        assert_equal(expected, tree_str)
+            '{back_ref}.</paragraph>')
+        u_if_py2 = '' if six.PY3 else 'u'
+        expected_late = (
+            expected_base.format(
+                # Sphinx 1.5.1
+                eq_number=' number="1"',
+                u_if_py2=u_if_py2,
+                number_default=' number="None"',
+                back_ref=(
+                    '<paragraph>Refers to equation at '
+                    '<pending_xref refdoc="some_math" refdomain="math" '
+                    'refexplicit="False" reftarget="some-label" '
+                    'reftype="eq" refwarn="True">'
+                    '<literal classes="xref eq">some-label</literal>'
+                    '</pending_xref>')))
+        expected_early = (
+            expected_base.format(
+                # Sphinx 1.3.1
+                eq_number='',
+                u_if_py2=u_if_py2,
+                number_default='',
+                back_ref=(
+                    '<paragraph>Refers to equation at '
+                    '<eqref docname="some_math" '
+                    'target="some-label">(?)</eqref>')))
+        assert_true(tree_str in (expected_late, expected_early))
