@@ -161,6 +161,7 @@ class MathCodeDirective(Directive):
         node = displaymath()
         node['latex'] = latex(val)
         node['label'] = self.options.get('name', None)
+        node['number'] = None
         if node['label'] is None:
             node['label'] = self.options.get('label', None)
         node['nowrap'] = 'nowrap' in self.options
