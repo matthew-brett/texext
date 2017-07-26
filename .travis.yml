@@ -38,7 +38,7 @@ matrix:
     # Python 3.3 can't use latest sphinx or numpy
     - python: 3.3
       env:
-        - DEPENDS="numpy==1.11.0 sphinx==1.4.3 sympy matplotlib==1.5.3"
+        - DEPENDS="numpy==1.10.2 sphinx==1.4.3 sympy matplotlib==1.5.3"
     # Test pre-release versions of everything
     - python: 3.5
       env:
