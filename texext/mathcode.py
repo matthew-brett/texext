@@ -80,12 +80,9 @@ import warnings
 
 from ast import parse, Expr, Expression
 
-from docutils import nodes
 from docutils.parsers.rst import directives
 
-from sphinx.util.compat import Directive
-from sphinx.util.nodes import set_source_info
-from sphinx.ext.mathbase import MathDirective, displaymath
+from sphinx.ext.mathbase import MathDirective
 
 
 def eval_code(code_str, context):
