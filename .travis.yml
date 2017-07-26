@@ -12,7 +12,7 @@ env:
         - DEPENDS="six sphinx sympy matplotlib"
         - PKG_NAME=texext
         # URL for extra wheel repo
-        - EXTRA_WHEELS=https://nipy.bic.berkeley.edu/manylinux
+        - EXTRA_WHEELS="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
 
 python:
     - 3.4
@@ -39,6 +39,10 @@ matrix:
     - python: 3.3
       env:
         - DEPENDS="sphinx==1.4.3 sympy matplotlib==1.5.3"
+    # Test pre-release versions of everything
+    - python: 3.5
+      env:
+        - EXTRA_PIP_FLAGS="--pre"
 
 before_install:
     - source tools/travis_tools.sh
@@ -48,7 +52,7 @@ before_install:
     - python -m pip install --upgrade pip wheel
     - python --version  # just to check
     - retry pip install nose # always
-    - retry pip install -f $EXTRA_WHEELS $DEPENDS
+    - retry pip install $EXTRA_PIP_FLAGS -f $EXTRA_WHEELS $DEPENDS
     - if [ "${COVERAGE}" == "1" ]; then
       pip install coverage;
       pip install coveralls;
