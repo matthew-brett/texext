@@ -12,8 +12,10 @@ from warnings import warn
 import re
 from functools import partial
 
+from docutils import nodes
 from docutils.utils import escape2null, unescape
-from docutils.nodes import Text, SparseNodeVisitor, paragraph
+from docutils.transforms import Transform
+
 from sphinx.errors import ExtensionError
 from sphinx.ext.mathbase import math
 
@@ -151,11 +153,21 @@ txt_dollars_to_math = partial(rst_dollars_to_math,
                               dollar_repl=MATH_MARKER + r"\1" + MATH_MARKER)
 
 
-class MathDollarMaker(SparseNodeVisitor):
+class MathDollarTransform(Transform):
+    """ Replace text between dollars with inline math nodes
+    """
 
-    def visit_Text(self, node):
+    # Has to be before docutils.transforms.univerals.SmartQuotes transform,
+    # which currently throws away the rawsource for the node.
+    default_priority = 100
+
+    def apply(self):
+        for node in self.document.traverse(nodes.Text):
+            self._process_node(node)
+
+    def _process_node(self, node):
         # Avoid literals etc
-        if not isinstance(node.parent, paragraph):
+        if not isinstance(node.parent, nodes.paragraph):
             return
         in_str = node.rawsource
         processed = txt_dollars_to_math(in_str)
@@ -171,7 +183,7 @@ class MathDollarMaker(SparseNodeVisitor):
             if i % 2:  # See sphinx.ext.mathbase
                 new_node = math(latex=to_backslashes)
             else:
-                new_node = Text(unescape(with_nulls), to_backslashes)
+                new_node = nodes.Text(unescape(with_nulls), to_backslashes)
             new_node.parent = node.parent
             new_nodes.append(new_node)
         # Put new nodes into parent's list of children
@@ -183,21 +195,14 @@ class MathDollarMaker(SparseNodeVisitor):
                 new_children += new_nodes
         node.parent.children = new_children
 
-    def unknown_visit(self, node):
-        pass
-
-
-def dt_process_dollars(app, doctree):
-    doctree.walk(MathDollarMaker(doctree.document))
-
 
 def mathdollar_docstrings(app, what, name, obj, options, lines):
     d2m_source(lines)
 
 
 def setup(app):
-    # Process pages after parsing ReST to avoid false positives
-    app.connect("doctree-read", dt_process_dollars)
+    # Process pages after initial parse of ReST to avoid false positives
+    app.add_transform(MathDollarTransform)
     try:
         # We have to process docstrings as text, it's the Wild Wild West.
         app.connect('autodoc-process-docstring', mathdollar_docstrings)
