@@ -96,16 +96,26 @@ plot_directive`_, set the following in your ``conf.py``::
     Conversely, if you want to use the mathcode directive context from the
     plot_directive, list mathcode first in your sphinx extension list.
 
-Remember that, by default, the ``plot_directive`` will clear the namespace
-context for each directive, so you may want to use the ``:context:`` option to
-the plot directive, most of the time.
+.. note::
 
-If you want to work with a customized version of the plot_directive, you need
-to supply the name of the plot context dictionary for the plot directive, as a
-string.  For example, if you have a custom plot directive module importable as
-``import my_path.plot_directive``, with the plot context in
-``my_path.plot_directive.plot_context``, then your ``conf.py`` should have
-lines like these::
+    By default, the Matplotlib ``plot_directive`` will clear the namespace
+    context for each directive, so you may want to use the ``:context:``
+    option to the plot directive, most of the time.
+
+If you are using Nb2plots_ for your plots, and you want Mathcode to share a
+namespace with the Nb2plots plot directive, you will need to specify the
+Nb2plots plot context directly::
+
+    # Config of mathcode directive
+    mathcode_use_plot_ns = True
+    mathcode_plot_context = 'nb2plots.nbplots.plot_context'
+
+More generally if you want to work with a customized version of the
+plot_directive, you need to supply the name of the plot context dictionary for
+the plot directive, as a string.  For example, if you have a custom plot
+directive module importable as ``import my_path.plot_directive``, with the
+plot context in ``my_path.plot_directive.plot_context``, then your ``conf.py``
+should have lines like these::
 
     # Config of mathcode directive
     mathcode_plot_context = "my_path.plot_directive.plot_context"
@@ -142,3 +152,4 @@ Please put up issues on the `texext issue tracker`_.
 .. _rest: http://docutils.sourceforge.net/rst.html
 .. _texext issue tracker: https://github.com/matthew-brett/texext/issues
 .. _matplotlib plot_directive: http://matplotlib.org/sampledoc/extensions.html
+.. _nb2plots: https://pypi.python.org/pypi/nb2plots
