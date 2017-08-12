@@ -24,7 +24,7 @@ math, but please check your output carefully, and submit an issue on the
 `texext issue tracker`_ if we have messed up.
 
 To enable math_dollar, make sure that the ``texext`` package is on your
-Python path, and add ``textext.math_dollar`` to your list of extensions in the
+Python path, and add ``texext.math_dollar`` to your list of extensions in the
 Sphinx ``conf.py``.  If you want math_dollar to process docstrings, you
 should add ``sphinx.ext.autodoc`` higher up your extensions list than
 ``math_dollar``.
