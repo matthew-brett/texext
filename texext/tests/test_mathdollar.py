@@ -11,7 +11,7 @@ def source_shim(in_str):
     # Shim to return source, so testing a bit more convenient
     source = [in_str]
     d2m_source(source)
-    return source[0]
+    return "\n".join(source)
 
 
 def test_dollars_to_math():

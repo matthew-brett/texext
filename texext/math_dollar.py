@@ -22,7 +22,7 @@ from sphinx.ext.mathbase import math
 
 def d2m_source(source):
     r"""
-    Replace dollar signs with backticks in string within `source` list
+    Replace dollar signs with :math:`` within strings in `source` list
 
     See: :func:`rst_dollars_to_math` for details.
 
@@ -30,10 +30,10 @@ def d2m_source(source):
     ----------
     source : sequence of str
         Sequence of strings, usually read from a ReST source file.  `source`
-        modified in place.  There should only be one element, a single string.
+        modified in place.
     """
     s = "\n".join(source)
-    source[:] = [rst_dollars_to_math(s)]
+    source[:] = rst_dollars_to_math(s).split("\n")
 
 
 class StringProtector(object):
