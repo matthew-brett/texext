@@ -43,6 +43,10 @@ matrix:
     - python: 3.5
       env:
         - EXTRA_PIP_FLAGS="--pre"
+    # Test using test requirements
+    - python: 3.5
+      env:
+        - DEPENDS="-r test-requirements.txt"
 
 before_install:
     - source tools/travis_tools.sh

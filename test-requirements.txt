@@ -1,0 +1,6 @@
+# Requirements for running tests
+-r requirements.txt
+sympy>=0.7
+matplotlib>=1.4.3
+nose
+mock
