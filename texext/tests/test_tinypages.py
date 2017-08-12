@@ -4,7 +4,7 @@ from os.path import (join as pjoin, dirname, isdir)
 
 import six
 
-from .pagebuilder import setup_module, PageBuilder
+from sphinxtesters import ModifiedPageBuilder
 
 from nose.tools import assert_true, assert_equal
 
@@ -12,12 +12,12 @@ HERE = dirname(__file__)
 PAGES = pjoin(HERE, 'tinypages')
 
 
-class TestTinyPages(PageBuilder):
+class TestTinyPages(ModifiedPageBuilder):
     # Test build and output of tinypages project
-    page_path = PAGES
+    page_source_template = PAGES
 
     def test_some_math(self):
-        assert_true(isdir(self.html_dir))
+        assert_true(isdir(self.out_dir))
         assert_true(isdir(self.doctree_dir))
         doctree = self.get_doctree('some_math')
         assert_equal(len(doctree.document), 1)
