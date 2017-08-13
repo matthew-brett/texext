@@ -31,4 +31,4 @@ class TestPlotContext(ModifiedPageBuilder):
             '<only expr="texinfo"/>\n'
             '<paragraph>More text</paragraph>\n'
             '<displaymath docname="plot_and_math" label="None" '
-            'latex="101" nowrap="False"/>')
+            'latex="101" nowrap="False"( number="None")?/>')

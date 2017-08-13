@@ -24,11 +24,11 @@ class TestPlotDirective(ModifiedPageBuilder):
         assert_regexp_matches(tree_str,
             '<title>Plot directive with mathcode</title>\n'
             '<paragraph>Some text</paragraph>\n'
-            r'<literal_block (highlight_args="{}"\s+)?language="python" '
+            r'<literal_block( highlight_args="{}")? language="python" '
             'linenos="False" xml:space="preserve">a = 101</literal_block>\n'
             '<only expr="html"/>\n'
             '<only expr="latex"/>\n'
             '<only expr="texinfo"/>\n'
             '<paragraph>More text</paragraph>\n'
             '<displaymath docname="plot_and_math" label="None" '
-            'latex="101" nowrap="False"/>')
+            'latex="101" nowrap="False"( number="None")?/>')
