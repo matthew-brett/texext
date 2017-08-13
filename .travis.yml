@@ -10,6 +10,7 @@ cache:
 env:
     global:
         - DEPENDS="six sphinx sympy matplotlib"
+        - TEST_DEPENDS="nose sphinxtesters"
         - PKG_NAME=texext
         # URL for extra wheel repo
         - EXTRA_WHEELS="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
@@ -46,6 +47,7 @@ matrix:
     # Test using test requirements
     - python: 3.5
       env:
+        - TEST_DEPENDS=
         - DEPENDS="-r test-requirements.txt"
 
 before_install:
@@ -54,7 +56,7 @@ before_install:
     - source venv/bin/activate
     - python -m pip install --upgrade pip wheel
     - python --version  # just to check
-    - pip install nose sphinxtesters # always
+    - if [ -n "$TEST_DEPENDS" ]; then pip install $TEST_DEPENDS; fi
     - pip install $EXTRA_PIP_FLAGS -f $EXTRA_WHEELS $DEPENDS
     - if [ "${COVERAGE}" == "1" ]; then
       pip install coverage;
