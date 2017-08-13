@@ -49,14 +49,13 @@ matrix:
         - DEPENDS="-r test-requirements.txt"
 
 before_install:
-    - source tools/travis_tools.sh
     - pip install -U virtualenv
     - virtualenv --python=python venv
     - source venv/bin/activate
     - python -m pip install --upgrade pip wheel
     - python --version  # just to check
-    - retry pip install nose # always
-    - retry pip install $EXTRA_PIP_FLAGS -f $EXTRA_WHEELS $DEPENDS
+    - pip install nose sphinxtesters # always
+    - pip install $EXTRA_PIP_FLAGS -f $EXTRA_WHEELS $DEPENDS
     - if [ "${COVERAGE}" == "1" ]; then
       pip install coverage;
       pip install coveralls;
