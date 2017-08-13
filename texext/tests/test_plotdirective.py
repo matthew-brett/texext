@@ -32,3 +32,16 @@ class TestPlotDirective(ModifiedPageBuilder):
             '<paragraph>More text</paragraph>\n'
             '<displaymath docname="plot_and_math" label="None" '
             'latex="101" nowrap="False"( number="None")?/>')
+
+
+class TestTopPlotDirective(TestPlotDirective):
+    # Test we can import mathcode with just `texext`
+
+    @classmethod
+    def modify_source(cls):
+        conf_fname = pjoin(cls.page_source, 'conf.py')
+        with open(conf_fname, 'rt') as fobj:
+            contents = fobj.read()
+        contents = contents.replace("'texext.mathcode'", "'texext'")
+        with open(conf_fname, 'wt') as fobj:
+            fobj.write(contents)

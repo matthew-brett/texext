@@ -92,3 +92,17 @@ class TestTinyPages(ModifiedPageBuilder):
                     '<eqref docname="some_math" '
                     'target="some-label">(?)</eqref>')))
         assert_true(tree_str in (expected_late, expected_early))
+
+
+class TestTopLevel(TestTinyPages):
+    # Test we can import math_dollar with just `texext`
+
+    @classmethod
+    def modify_source(cls):
+        conf_fname = pjoin(cls.page_source, 'conf.py')
+        with open(conf_fname, 'rt') as fobj:
+            contents = fobj.read()
+        contents = contents.replace("'texext.mathcode',\n", "")
+        contents = contents.replace("'texext.math_dollar'", "'texext'")
+        with open(conf_fname, 'wt') as fobj:
+            fobj.write(contents)
