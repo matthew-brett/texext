@@ -17,6 +17,29 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.5
+===
+
+Bugfix release:
+
+* Change return value from math_dollar doctest parser to be list of strings,
+  one per line, rather than a single multiline string.  This makes it possible
+  for other ReST transforms to run correctly on the output, such as links and
+  substitutions.  Add tests to confirm this works correctly.
+* Add ability to import ``math_dollar`` and ``mathcode`` from top level import
+  of ``texext``.
+* Refactor testing to use ``sphinxtesters`` module.
+
+0.4
+===
+
+Bugfix release for compatibility with Sphinx >= 1.6
+
+* Refactor math_dollar extension to use docutils transform instead of
+  NodeVisitor.  This works round a change in Sphinx >= 1.6 which resulted in
+  the node "rawsource" being discarded during the transform phase, making it
+  impossible to correctly replace the math
+
 0.3.4
 =====
 
