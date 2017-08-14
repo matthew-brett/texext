@@ -9,12 +9,29 @@ from sphinxtesters import ModifiedPageBuilder
 
 from nose.tools import assert_equal, assert_regexp_matches
 
-PAGES = pjoin(dirname(__file__), 'custom_plotdirective')
+PAGES = pjoin(dirname(__file__), 'plotdirective')
 
 
-class TestPlotDirective(ModifiedPageBuilder):
+class TestCustomPlotDirective(ModifiedPageBuilder):
     # Test build and output of custom_plotdirective project
     page_source_template = PAGES
+
+    @classmethod
+    def modify_pages(cls):
+        conf_fname = pjoin(cls.page_source, 'conf.py')
+        with open(conf_fname, 'rt') as fobj:
+            contents = fobj.read()
+        contents = contents.replace(
+            "'matplotlib.sphinxext.plot_directive'",
+            '"plot_directive"')
+        contents += """
+< # Use custom plot_directive
+< sys.path.insert(0, abspath(pjoin('.')))
+< import plot_directive
+< mathcode_plot_directive = plot_directive
+"""
+        with open(conf_fname, 'wt') as fobj:
+            fobj.write(contents)
 
     def test_plot_and_math(self):
         doctree = self.get_doctree('plot_and_math')
