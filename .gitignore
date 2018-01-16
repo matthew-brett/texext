@@ -5,3 +5,5 @@ build/
 dist/
 texext.egg-info/
 MANIFEST
+.html.txt
+.cache/
