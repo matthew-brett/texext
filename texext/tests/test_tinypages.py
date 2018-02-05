@@ -50,7 +50,7 @@ class TestTinyPages(ModifiedPageBuilder):
             '<paragraph>More text</paragraph>\n'
             '<target refid="equation-some-label"/>\n'
             '<displaymath docname="some_math" '
-            """ids="[{u_if_py2}'equation-some-label']" """
+            """ids="[{u_prefix}'equation-some-label']" """
             'label="some-label" '
             'latex="5 a + 3 b" nowrap="False"{eq_number}/>\n'
             '<paragraph>Yet more text</paragraph>\n'
@@ -67,12 +67,14 @@ class TestTinyPages(ModifiedPageBuilder):
             'Protected n in <math latex="a"/> line.</paragraph>\n'
             # Do labels get set as targets?
             '{back_ref}.</paragraph>')
-        u_if_py2 = '' if six.PY3 else 'u'
-        expected_late = (
-            expected_base.format(
+        expecteds = []
+        # 'u' prefix may be present or not depending on Sphinx version (I
+        # think) or Python version.
+        for u_prefix in ('', 'u'):
+            expecteds.append(expected_base.format(
                 # Sphinx 1.5.1
                 eq_number=' number="1"',
-                u_if_py2=u_if_py2,
+                u_prefix=u_prefix,
                 number_default=' number="None"',
                 back_ref=(
                     '<paragraph>Refers to equation at '
@@ -81,17 +83,17 @@ class TestTinyPages(ModifiedPageBuilder):
                     'reftype="eq" refwarn="True">'
                     '<literal classes="xref eq">some-label</literal>'
                     '</pending_xref>')))
-        expected_early = (
+        expecteds.append(
             expected_base.format(
                 # Sphinx 1.3.1
                 eq_number='',
-                u_if_py2=u_if_py2,
+                u_prefix='' if six.PY3 else 'u',
                 number_default='',
                 back_ref=(
                     '<paragraph>Refers to equation at '
                     '<eqref docname="some_math" '
                     'target="some-label">(?)</eqref>')))
-        assert_true(tree_str in (expected_late, expected_early))
+        assert_true(tree_str in expecteds)
 
 
 class TestTopLevel(TestTinyPages):
