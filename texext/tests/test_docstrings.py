@@ -36,7 +36,7 @@ def check_re(pattern, text=None):
 # sphinx 1.7b0 has "math notranslate" for "math"
 FRAGMENTS = dict(code=r'(code|tt)',
                  cclass=r'"(docutils literal( notranslate)?)"',
-                 math=r'"math( notranslate)?"')
+                 math=r'"math( notranslate)?( nohighlight)?"')
 DOCSTRING_RE = re.compile(
 r'<p>Here is the module docstring:</p>\n'
 r'<span class="target" id="module-texext.tests.for_docstrings"></span>'
