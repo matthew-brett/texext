@@ -25,7 +25,6 @@ matrix:
     - python: 2.7
       env:
         - COVER_ARGS="--cov=$PKG_NAME"
-        - DOCTEST_ARGS="--doctest-modules"
     # Absolute minimum dependencies
     - python: 2.7
       env:
@@ -72,7 +71,7 @@ script:
           pip install pytest-cov
           pip install coveralls
       fi
-      py.test $COVER_ARGS $DOCTEST_ARGS --pyargs $PKG_NAME
+      py.test $COVER_ARGS --pyargs $PKG_NAME
 
 after_success:
     - if [ "${COVERAGE}" == "1" ]; then coveralls; fi
