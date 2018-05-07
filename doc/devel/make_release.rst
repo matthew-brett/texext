@@ -45,8 +45,9 @@ Releasing texext
     username:your.pypi.username
     password:your-password
 
-* Once everything looks good, tag the release.  This will also set the version
-  (we are using versioneer_ to manage versions via git tags)::
+* Now tag the release.  This will also set the version (we are using
+  versioneer_ to manage versions via git tags).  The ``-s`` flag below makes a
+  signed tag::
 
     git tag -s 0.3
 
