@@ -5,9 +5,6 @@ import re
 
 from sphinxtesters import SourcesBuilder
 
-from nose.tools import assert_regexp_matches
-
-
 # Utilities for debugging
 # py.test texext/tests/test_docstrings.py --pdb
 # write_file(html)
@@ -90,4 +87,4 @@ extensions = [
 
     def test_docstrings(self):
         html = self.get_built_file('a_page.html')
-        assert_regexp_matches(html, DOCSTRING_RE)
+        assert DOCSTRING_RE.search(html)

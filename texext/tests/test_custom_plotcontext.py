@@ -3,9 +3,8 @@
 Test ability to combine plot_context with mathcode
 """
 
+import re
 from os.path import join as pjoin
-
-from nose.tools import assert_equal, assert_regexp_matches
 
 from .test_custom_plotdirective import TestCustomPlotDirective
 
@@ -28,10 +27,10 @@ mathcode_plot_context = 'matplotlib.sphinxext.plot_directive.plot_context'
 
     def test_plot_and_math(self):
         doctree = self.get_doctree('plot_and_math')
-        assert_equal(len(doctree.document), 1)
+        assert len(doctree.document) == 1
         tree_str = self.doctree2str(doctree)
         # Sphinx by 1.3 adds "highlight_args={}", Sphinx at 1.1.3 does not
-        assert_regexp_matches(tree_str,
+        assert re.compile(
             '<title>Plot directive with mathcode</title>\n'
             '<paragraph>Some text</paragraph>\n'
             r'<literal_block (highlight_args="{}"\s+)?language="python" '
@@ -41,4 +40,5 @@ mathcode_plot_context = 'matplotlib.sphinxext.plot_directive.plot_context'
             '<only expr="texinfo"/>\n'
             '<paragraph>More text</paragraph>\n'
             '<displaymath docname="plot_and_math" label="None" '
-            'latex="101" nowrap="False"( number="None")?/>')
+            'latex="101" nowrap="False"( number="None")?/>'
+        ).search(tree_str)

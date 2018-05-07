@@ -7,3 +7,4 @@ texext.egg-info/
 MANIFEST
 .html.txt
 .cache/
+.pytest_cache/

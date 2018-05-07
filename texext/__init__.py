@@ -8,11 +8,6 @@ __version__ = get_versions()['version']
 del get_versions
 
 
-def setup_package():
-    # Prevent nose tests running setup function
-    pass
-
-
 def setup(app):
     math_dollar.setup(app)
     mathcode.setup(app)

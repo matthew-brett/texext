@@ -6,8 +6,6 @@ import six
 
 from sphinxtesters import ModifiedPageBuilder
 
-from nose.tools import assert_true, assert_equal
-
 HERE = dirname(__file__)
 PAGES = pjoin(HERE, 'tinypages')
 
@@ -17,10 +15,10 @@ class TestTinyPages(ModifiedPageBuilder):
     page_source_template = PAGES
 
     def test_some_math(self):
-        assert_true(isdir(self.out_dir))
-        assert_true(isdir(self.doctree_dir))
+        assert isdir(self.out_dir)
+        assert isdir(self.doctree_dir)
         doctree = self.get_doctree('some_math')
-        assert_equal(len(doctree.document), 1)
+        assert len(doctree.document) == 1
         tree_str = self.doctree2str(doctree)
         expected_base = (
             '<title>Some math</title>\n'
@@ -93,7 +91,7 @@ class TestTinyPages(ModifiedPageBuilder):
                     '<paragraph>Refers to equation at '
                     '<eqref docname="some_math" '
                     'target="some-label">(?)</eqref>')))
-        assert_true(tree_str in expecteds)
+        assert tree_str in expecteds
 
 
 class TestTopLevel(TestTinyPages):

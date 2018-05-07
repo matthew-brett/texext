@@ -4,10 +4,9 @@ Test ability to combine plot_directive with mathcode
 """
 
 from os.path import dirname, join as pjoin
+import re
 
 from sphinxtesters import ModifiedPageBuilder
-
-from nose.tools import assert_equal, assert_regexp_matches
 
 PAGES = pjoin(dirname(__file__), 'plotdirective')
 
@@ -35,10 +34,10 @@ class TestCustomPlotDirective(ModifiedPageBuilder):
 
     def test_plot_and_math(self):
         doctree = self.get_doctree('plot_and_math')
-        assert_equal(len(doctree.document), 1)
+        assert len(doctree.document) == 1
         tree_str = self.doctree2str(doctree)
         # Sphinx by 1.3 adds "highlight_args={}", Sphinx at 1.1.3 does not
-        assert_regexp_matches(tree_str,
+        assert re.compile(
             '<title>Plot directive with mathcode</title>\n'
             '<paragraph>Some text</paragraph>\n'
             r'<literal_block (highlight_args="{}"\s*)?language="python" '
@@ -48,4 +47,5 @@ class TestCustomPlotDirective(ModifiedPageBuilder):
             '<only expr="texinfo"/>\n'
             '<paragraph>More text</paragraph>\n'
             '<displaymath docname="plot_and_math" label="None" '
-            'latex="101" nowrap="False"( number="None")?/>')
+            'latex="101" nowrap="False"( number="None")?/>'
+        ).search(tree_str)
