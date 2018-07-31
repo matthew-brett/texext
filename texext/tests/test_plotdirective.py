@@ -6,12 +6,12 @@ Test ability to combine plot_directive with mathcode
 from os.path import dirname, join as pjoin
 import re
 
-from sphinxtesters import ModifiedPageBuilder
+from sphinxtesters import PageBuilder
 
 PAGES = pjoin(dirname(__file__), 'plotdirective')
 
 
-class TestPlotDirective(ModifiedPageBuilder):
+class TestPlotDirective(PageBuilder):
     # Test build and output of custom_plotdirective project
     page_source_template = PAGES
 

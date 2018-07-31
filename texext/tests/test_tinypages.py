@@ -4,13 +4,13 @@ from os.path import (join as pjoin, dirname, isdir)
 
 import six
 
-from sphinxtesters import ModifiedPageBuilder
+from sphinxtesters import PageBuilder
 
 HERE = dirname(__file__)
 PAGES = pjoin(HERE, 'tinypages')
 
 
-class TestTinyPages(ModifiedPageBuilder):
+class TestTinyPages(PageBuilder):
     # Test build and output of tinypages project
     page_source_template = PAGES
 
