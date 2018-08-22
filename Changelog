@@ -17,6 +17,23 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.6.1
+=====
+
+Bugfix release:
+
+* Adapt to Sphinx 1.8 imports - particularly mathcode.
+
+0.6
+===
+
+Bugfix release:
+
+* Adapt testing to Sphinx 1.7 variants.
+* Use pytest for tests.
+* Add documentation to sdist.
+
+
 0.5
 ===
 
