@@ -14,7 +14,7 @@ from distutils.core import setup
 import versioneer
 
 extra_setup_kwargs = ({} if 'setuptools' not in sys.modules else
-                      dict(install_requires=['six', 'sphinx>=1.1.3']))
+                      dict(install_requires=['six', 'sphinx>=1.3.1']))
 
 
 setup(name='texext',
