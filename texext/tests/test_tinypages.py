@@ -2,12 +2,20 @@
 
 from os.path import (join as pjoin, dirname, isdir)
 
-import six
+import sphinx
+SPHINX_ge_1p5 = sphinx.version_info[:2] >= (1, 5)
 
 from sphinxtesters import PageBuilder
 
 HERE = dirname(__file__)
 PAGES = pjoin(HERE, 'tinypages')
+
+from texext.tests.test_plotdirective import format_math_block
+
+def _pdiff(str1, str2):
+    # For debugging
+    from difflib import ndiff
+    print(''.join(ndiff(str1.splitlines(True), str2.splitlines(True))))
 
 
 class TestTinyPages(PageBuilder):
@@ -20,7 +28,20 @@ class TestTinyPages(PageBuilder):
         doctree = self.get_doctree('some_math')
         assert len(doctree.document) == 1
         tree_str = self.doctree2str(doctree)
-        expected_base = (
+        if SPHINX_ge_1p5:
+            back_ref = (
+                '<paragraph>Refers to equation at '
+                '<pending_xref refdoc="some_math" refdomain="math" '
+                'refexplicit="False" reftarget="some-label" '
+                'reftype="eq" refwarn="True">'
+                '<literal classes="xref eq">some-label</literal>'
+                '</pending_xref>')
+        else:
+            back_ref=(
+                '<paragraph>Refers to equation at '
+                '<eqref docname="some_math" '
+                'target="some-label">(?)</eqref>')
+        expected = (
             '<title>Some math</title>\n'
             '<paragraph>Here <math latex="a = 1"/>, except '
             '<title_reference>$b = 2$</title_reference>.</paragraph>\n'
@@ -43,17 +64,17 @@ class TestTinyPages(PageBuilder):
             '</paragraph>'
             '</list_item>'
             '</bullet_list>\n'
-            '<displaymath docname="some_math" label="None" '
-            'latex="10 a + 2 b + q" nowrap="False"{number_default}/>\n'
-            '<paragraph>More text</paragraph>\n'
+            + format_math_block('some_math', "10 a + 2 b + q") +
+            '\n<paragraph>More text</paragraph>\n'
             '<target refid="equation-some-label"/>\n'
-            '<displaymath docname="some_math" '
-            """ids="[{u_prefix}'equation-some-label']" """
-            'label="some-label" '
-            'latex="5 a + 3 b" nowrap="False"{eq_number}/>\n'
-            '<paragraph>Yet more text</paragraph>\n'
-            '<displaymath docname="some_math" label="None" '
-            'latex="5 w + 3 x" nowrap="False"{number_default}/>\n'
+            + format_math_block(
+                'some_math', "5 a + 3 b",
+                label='some-label',
+                number='1',
+                ids='equation-some-label') +
+            '\n<paragraph>Yet more text</paragraph>\n'
+            + format_math_block(
+                "some_math", latex="5 w + 3 x") + '\n' +
             r'<paragraph>Math with <math latex="\beta"/> a backslash.'
             '</paragraph>\n'
             '<paragraph>'  # What happens to backslashes?
@@ -64,34 +85,9 @@ class TestTinyPages(PageBuilder):
             'A line break.  Protected \ backslash.  '
             'Protected n in <math latex="a"/> line.</paragraph>\n'
             # Do labels get set as targets?
-            '{back_ref}.</paragraph>')
-        expecteds = []
-        # 'u' prefix may be present or not depending on Sphinx version (I
-        # think) or Python version.
-        for u_prefix in ('', 'u'):
-            expecteds.append(expected_base.format(
-                # Sphinx 1.5.1
-                eq_number=' number="1"',
-                u_prefix=u_prefix,
-                number_default=' number="None"',
-                back_ref=(
-                    '<paragraph>Refers to equation at '
-                    '<pending_xref refdoc="some_math" refdomain="math" '
-                    'refexplicit="False" reftarget="some-label" '
-                    'reftype="eq" refwarn="True">'
-                    '<literal classes="xref eq">some-label</literal>'
-                    '</pending_xref>')))
-        expecteds.append(
-            expected_base.format(
-                # Sphinx 1.3.1
-                eq_number='',
-                u_prefix='' if six.PY3 else 'u',
-                number_default='',
-                back_ref=(
-                    '<paragraph>Refers to equation at '
-                    '<eqref docname="some_math" '
-                    'target="some-label">(?)</eqref>')))
-        assert tree_str in expecteds
+            + back_ref +
+            '.</paragraph>')
+        assert tree_str == expected
 
 
 class TestTopLevel(TestTinyPages):
