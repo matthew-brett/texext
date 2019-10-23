@@ -82,7 +82,7 @@ class TestTinyPages(PageBuilder):
             '</paragraph>\n'
             '<paragraph>'
             'Some * asterisks *.  <math latex="dollars"/>. '
-            'A line break.  Protected \ backslash.  '
+            r'A line break.  Protected \ backslash.  '
             'Protected n in <math latex="a"/> line.</paragraph>\n'
             # Do labels get set as targets?
             + back_ref +
