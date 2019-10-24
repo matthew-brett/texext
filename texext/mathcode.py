@@ -83,9 +83,9 @@ from ast import parse, Expr, Expression
 from docutils.parsers.rst import directives
 
 try:
-    from sphinx.ext.mathbase import MathDirective
-except ImportError:  # Sphinx 1.8.0b1
     from sphinx.directives.patches import MathDirective
+except ImportError:  # Sphinx < 1.8.0b1
+    from sphinx.ext.mathbase import MathDirective
 
 
 def eval_code(code_str, context):
