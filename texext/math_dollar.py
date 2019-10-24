@@ -101,7 +101,7 @@ rst_protector = StringProtector(
 def rst_dollars_to_math(rst_str,
                         protector=rst_protector,
                         dollar_repl=r":math:`\1`"):
-    """
+    r"""
     Replace dollar signs with backticks in string `rst_str`
 
     More precisely, do a regular expression search.  Replace a plain dollar
