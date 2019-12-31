@@ -55,8 +55,8 @@ EXP_PLOT_AND_MATH = (
     '(linenos="False" )?'
     'xml:space="preserve">a = 101</literal_block>\n'
     '<only expr="html"/>\n'
-    '<only expr="latex"/>\n'
-    '<only expr="texinfo"/>\n'
+    '<only expr="(not html|latex"/>\n'
+    '<only expr="texinfo)"/>\n'
     '<paragraph>More text</paragraph>\n'
     + format_math_block('plot_and_math', '101'))
 
