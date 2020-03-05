@@ -15,9 +15,9 @@ from functools import partial
 from docutils import nodes
 from docutils.utils import escape2null, unescape
 from docutils.transforms import Transform
+from docutils.nodes import math
 
 from sphinx.errors import ExtensionError
-from sphinx.ext.mathbase import math
 
 
 def d2m_source(source):
