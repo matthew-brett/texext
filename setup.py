@@ -11,6 +11,10 @@ with open('requirements.txt', 'rt') as fobj:
     install_requires = [line.strip() for line in fobj
                         if line.strip() and not line[0] in '#-']
 
+# Get any extra test requirements
+with open('test-requirements.txt', 'rt') as fobj:
+    test_requires = [line.strip() for line in fobj
+                     if line.strip() and not line[0] in '#-']
 
 setup(name='texext',
       version=versioneer.get_version(),
@@ -53,4 +57,5 @@ setup(name='texext',
         ],
       long_description = open('README.rst', 'rt').read(),
       install_requires = install_requires,
+      extras_require = {'test': test_requires},
       )
