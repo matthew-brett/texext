@@ -17,6 +17,15 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.6.2
+=====
+
+Bugfix release:
+
+* Try importing `math` node from docutils by default to avoid warning - thanks
+  to Jerry James for this fix.
+* Adapt tests to changes in Sphinx 1.8 and 2.0 output.
+
 0.6.1
 =====
 

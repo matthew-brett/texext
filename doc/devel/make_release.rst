@@ -51,7 +51,7 @@ Releasing texext
 
     git tag -s 0.3
 
-* Now you can upload the source release to PyPi.  See
+* Now you can upload the source release to PyPI.  See
   `setuptools intro`_::
 
     git clean -fxd
