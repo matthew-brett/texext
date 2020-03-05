@@ -1,20 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ''' Installation script for texext package '''
-import sys
 
-# For some commands, use setuptools.
-if len(set(('develop', 'bdist_egg', 'bdist_rpm', 'bdist', 'bdist_dumb',
-            'install_egg_info', 'egg_info', 'easy_install', 'bdist_wheel',
-            'bdist_mpkg')).intersection(sys.argv)) > 0:
-    import setuptools
-
-from distutils.core import setup
+from setuptools import setup
 
 import versioneer
 
-extra_setup_kwargs = ({} if 'setuptools' not in sys.modules else
-                      dict(install_requires=['six', 'sphinx>=1.3.1', 'docutils>=0.8']))
+# Get install requirements from requirements.txt file
+with open('requirements.txt', 'rt') as fobj:
+    install_requires = [line.strip() for line in fobj
+                        if line.strip() and not line[0] in '#-']
 
 
 setup(name='texext',
@@ -57,5 +52,5 @@ setup(name='texext',
             'Operating System :: MacOS',
         ],
       long_description = open('README.rst', 'rt').read(),
-      **extra_setup_kwargs
+      install_requires = install_requires,
       )
