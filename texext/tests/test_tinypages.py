@@ -4,6 +4,7 @@ from os.path import (join as pjoin, dirname, isdir)
 
 import sphinx
 SPHINX_ge_1p5 = sphinx.version_info[:2] >= (1, 5)
+SPHINX_ge_1p8 = sphinx.version_info[:2] >= (1, 8)
 
 from sphinxtesters import PageBuilder
 
@@ -16,6 +17,12 @@ def _pdiff(str1, str2):
     # For debugging
     from difflib import ndiff
     print(''.join(ndiff(str1.splitlines(True), str2.splitlines(True))))
+
+
+def _ilm(latex):
+    if SPHINX_ge_1p8:
+        return '<math>{}</math>'.format(latex)
+    return '<math latex="{}"/>'.format(latex)
 
 
 class TestTinyPages(PageBuilder):
@@ -42,10 +49,10 @@ class TestTinyPages(PageBuilder):
                 '<eqref docname="some_math" '
                 'target="some-label">(?)</eqref>')
         expected = (
-            '<title>Some math</title>\n'
-            '<paragraph>Here <math>a = 1</math>, except '
-            '<title_reference>$b = 2$</title_reference>.</paragraph>\n'
-            '<paragraph>Here <math>c = 3</math>, except '
+            '<title>Some math</title>\n' +
+            '<paragraph>Here %s, except ' % _ilm('a = 1') +
+            '<title_reference>$b = 2$</title_reference>.</paragraph>\n' +
+            '<paragraph>Here %s, except ' % _ilm('c = 3') +
             '<literal>$d = 4$</literal>.</paragraph>\n'
             '<paragraph>An escaped dollar, and a $100 value.</paragraph>\n'
             '<literal_block xml:space="preserve">'
@@ -53,15 +60,15 @@ class TestTinyPages(PageBuilder):
             '<bullet_list bullet="*">'
             '<list_item>'
             '<paragraph>'
-            'A list item containing\n'
-            '<math>f = 6</math> some mathematics.'
+            'A list item containing\n' + _ilm('f = 6') +
+            ' some mathematics.'
             '</paragraph>'
             '</list_item>'
             '<list_item>'
             '<paragraph>'
             'A list item containing '
-            '<literal>a literal across\nlines</literal> '
-            'and also <math>g = 7</math> some mathematics.'
+            '<literal>a literal across\nlines</literal> ' +
+            'and also %s some mathematics.' % _ilm('g = 7') +
             '</paragraph>'
             '</list_item>'
             '</bullet_list>\n'
@@ -76,17 +83,17 @@ class TestTinyPages(PageBuilder):
             '\n<paragraph>Yet more text</paragraph>\n'
             + format_math_block(
                 "some_math", latex="5 w + 3 x") + '\n' +
-            r'<paragraph>Math with <math>\beta</math> a backslash.'
+            '<paragraph>Math with %s a backslash.' % _ilm(r'\beta') +
             '</paragraph>\n'
             '<paragraph>'  # What happens to backslashes?
-            'A protected whitespace with <math>dollars</math>.'
-            '</paragraph>\n'
+            'A protected whitespace with ' + _ilm('dollars') +
+            '.</paragraph>\n'
             '<paragraph>'
-            'Some * asterisks *.  <math>dollars</math>. '
-            r'A line break.  Protected \ backslash.  '
-            'Protected n in <math>a</math> line.</paragraph>\n'
+            'Some * asterisks *.  ' + _ilm('dollars') +
+            r'. A line break.  Protected \ backslash.  ' +
+            'Protected n in %s line.</paragraph>\n' % _ilm('a') +
             # Do labels get set as targets?
-            + back_ref +
+            back_ref +
             '.</paragraph>')
         assert tree_str == expected
 

@@ -17,7 +17,11 @@ from docutils.utils import escape2null, unescape
 from docutils.transforms import Transform
 from docutils.nodes import math
 
+import sphinx
 from sphinx.errors import ExtensionError
+
+
+SPHINX_ge_18 = sphinx.version_info[:2] >= (1, 8)
 
 
 def d2m_source(source):
@@ -181,9 +185,11 @@ class MathDollarTransform(Transform):
             if part == '':
                 continue
             if i % 2:  # See sphinx.ext.mathbase
-                new_node = math()
-                # Newer node type adds node with latex as text.
-                new_node += nodes.Text(to_backslashes, to_backslashes)
+                if SPHINX_ge_18:
+                    new_node = math()
+                    new_node += nodes.Text(to_backslashes, to_backslashes)
+                else:
+                    new_node = math(latex=to_backslashes)
             else:
                 new_node = nodes.Text(unescape(with_nulls), to_backslashes)
             new_node.parent = node.parent
