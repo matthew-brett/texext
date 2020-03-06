@@ -17,6 +17,13 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.6.5
+=====
+
+Bugfix release
+
+* Fix misspelled test-requirements.txt
+
 0.6.4
 =====
 
