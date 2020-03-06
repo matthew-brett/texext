@@ -181,7 +181,9 @@ class MathDollarTransform(Transform):
             if part == '':
                 continue
             if i % 2:  # See sphinx.ext.mathbase
-                new_node = math(latex=to_backslashes)
+                new_node = math()
+                # Newer node type adds node with latex as text.
+                new_node += nodes.Text(to_backslashes, to_backslashes)
             else:
                 new_node = nodes.Text(unescape(with_nulls), to_backslashes)
             new_node.parent = node.parent

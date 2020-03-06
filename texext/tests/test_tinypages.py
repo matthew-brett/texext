@@ -43,24 +43,25 @@ class TestTinyPages(PageBuilder):
                 'target="some-label">(?)</eqref>')
         expected = (
             '<title>Some math</title>\n'
-            '<paragraph>Here <math latex="a = 1"/>, except '
+            '<paragraph>Here <math>a = 1</math>, except '
             '<title_reference>$b = 2$</title_reference>.</paragraph>\n'
-            '<paragraph>Here <math latex="c = 3"/>, except '
+            '<paragraph>Here <math>c = 3</math>, except '
             '<literal>$d = 4$</literal>.</paragraph>\n'
+            '<paragraph>An escaped dollar, and a $100 value.</paragraph>\n'
             '<literal_block xml:space="preserve">'
             'Here $e = 5$</literal_block>\n'
             '<bullet_list bullet="*">'
             '<list_item>'
             '<paragraph>'
             'A list item containing\n'
-            '<math latex="f = 6"/> some mathematics.'
+            '<math>f = 6</math> some mathematics.'
             '</paragraph>'
             '</list_item>'
             '<list_item>'
             '<paragraph>'
             'A list item containing '
             '<literal>a literal across\nlines</literal> '
-            'and also <math latex="g = 7"/> some mathematics.'
+            'and also <math>g = 7</math> some mathematics.'
             '</paragraph>'
             '</list_item>'
             '</bullet_list>\n'
@@ -75,15 +76,15 @@ class TestTinyPages(PageBuilder):
             '\n<paragraph>Yet more text</paragraph>\n'
             + format_math_block(
                 "some_math", latex="5 w + 3 x") + '\n' +
-            r'<paragraph>Math with <math latex="\beta"/> a backslash.'
+            r'<paragraph>Math with <math>\beta</math> a backslash.'
             '</paragraph>\n'
             '<paragraph>'  # What happens to backslashes?
-            'A protected whitespace with <math latex="dollars"/>.'
+            'A protected whitespace with <math>dollars</math>.'
             '</paragraph>\n'
             '<paragraph>'
-            'Some * asterisks *.  <math latex="dollars"/>. '
+            'Some * asterisks *.  <math>dollars</math>. '
             r'A line break.  Protected \ backslash.  '
-            'Protected n in <math latex="a"/> line.</paragraph>\n'
+            'Protected n in <math>a</math> line.</paragraph>\n'
             # Do labels get set as targets?
             + back_ref +
             '.</paragraph>')

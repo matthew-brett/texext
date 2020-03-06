@@ -6,6 +6,8 @@ Here $a = 1$, except `$b = 2$`.
 
 Here $c = 3$, except ``$d = 4$``.
 
+An escaped dollar, and a \$100 value.
+
 ::
 
     Here $e = 5$
