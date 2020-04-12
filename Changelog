@@ -17,6 +17,13 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.6.6
+=====
+
+Bugfix release
+
+* Adapt to newer Sphinx math nodes.  Required for compatibility with Sphinx 3.
+
 0.6.5
 =====
 
