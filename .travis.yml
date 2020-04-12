@@ -16,8 +16,6 @@ env:
         - EXTRA_WHEELS="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
 
 python:
-    - 3.4
-    - 3.5
     - 3.6
     - 3.7
     - 3.8
@@ -40,11 +38,11 @@ matrix:
         # matplotlib will force six install
         - DEPENDS="sphinx==1.3.1 sympy==0.7.6 matplotlib==1.4.3 docutils==0.13.1"
     # Test pre-release versions of everything
-    - python: 3.5
+    - python: 3.7
       env:
         - EXTRA_PIP_FLAGS="--pre"
     # Test using test requirements
-    - python: 3.5
+    - python: 3.7
       env:
         - TEST_DEPENDS=
         - DEPENDS="-r test-requirements.txt"
