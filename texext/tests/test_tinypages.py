@@ -35,6 +35,8 @@ class TestTinyPages(PageBuilder):
         doctree = self.get_doctree('some_math')
         assert len(doctree.document) == 1
         tree_str = self.doctree2str(doctree)
+        # Strip 0s that appear from docutils 0.16
+        tree_str = tree_str.replace('\x00', '')
         if SPHINX_ge_1p5:
             back_ref = (
                 '<paragraph>Refers to equation at '
