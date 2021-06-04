@@ -31,7 +31,7 @@ def check_re(pattern, text=None):
 # Docstring build regexp
 # sphinx 1.1.3 has <tt> for <code>
 # sphinx 1.7b0 has "math notranslate" for "math"
-FRAGMENTS = dict(code=r'(code|tt)',
+FRAGMENTS = dict(code=r'(code|tt|span)',
                  cclass=r'"(docutils literal( notranslate)?)"',
                  math=r'"math( notranslate)?( nohighlight)?"')
 DOCSTRING_RE = re.compile(
@@ -45,7 +45,7 @@ r'<a class="reference external" href="https://github\.com">a link</a>\.</p>\n'
 r'<p>Here is the <{code} class={cclass}>'
 r'<span class="pre">func</span></{code}> docstring:</p>\n'
 r'<dl class="(py )?function">\n'
-r'<dt id="texext.tests.for_docstrings\.func">\n'
+r'<dt( class=".*")? id="texext.tests.for_docstrings\.func">\n'
 r'<{code} class="(sig-prename )?descclassname">'
 r'(<span class="pre">)?texext.tests.for_docstrings\.(</span>)?'
 r'</{code}>'
