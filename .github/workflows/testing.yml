@@ -1,0 +1,42 @@
+name: Build and run tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, "3.10"]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install main test dependencies
+        run: |
+          pip install -r test-requirements.txt
+      - name: Install coverage dependencies
+        run: |
+          pip install pytest-cov
+      - name: Install package
+        run: |
+          pip install .
+      - name: Run tests
+        run: |
+          mkdir tmp
+          cd tmp
+          pytest --log-level DEBUG --cov-config=../.coveragerc --cov=texext --doctest-modules --pyargs texext
+      - name: Collect code coverage data
+        run: |
+          coverage xml --data-file=tmp/.coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: true
