@@ -31,7 +31,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install main test dependencies
         run: |
-          pip install "$DEPENDS"
+          pip install $DEPENDS
       - name: Install coverage dependencies
         run: |
           pip install pytest-cov
