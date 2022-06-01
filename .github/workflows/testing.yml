@@ -9,34 +9,45 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
+        depends: ['-r test-requirements.txt']
         python-version: [3.7, 3.8, 3.9, "3.10"]
+        include:
+          # Basic dependencies only
+          # Check against test-requirements.txt
+          - os: ubuntu-latest
+            python-version: 3.7
+            depends: "pytest sphinx==1.3.1 sympy==0.7.0 matplotlib==1.4.3 docutils==0.13.1 sphinxtesters==0.2"
 
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install main test dependencies
-        run: |
-          pip install -r test-requirements.txt
-      - name: Install coverage dependencies
-        run: |
-          pip install pytest-cov
-      - name: Install package
-        run: |
-          pip install .
-      - name: Run tests
-        run: |
-          mkdir tmp
-          cd tmp
-          pytest --log-level DEBUG --cov-config=../.coveragerc --cov=texext --doctest-modules --pyargs texext
-      - name: Collect code coverage data
-        run: |
-          coverage xml --data-file=tmp/.coverage
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          fail_ci_if_error: true
+  env:
+      DEPENDS: ${{ matrix.depends }}
+
+  steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install main test dependencies
+      run: |
+        pip install "$DEPENDS"
+    - name: Install coverage dependencies
+      run: |
+        pip install pytest-cov
+    - name: Install package
+      run: |
+        pip install .
+    - name: Run tests
+      run: |
+        mkdir tmp
+        cd tmp
+        pytest --log-level DEBUG --cov-config=../.coveragerc --cov=texext --doctest-modules --pyargs texext
+    - name: Collect code coverage data
+      run: |
+        coverage xml --data-file=tmp/.coverage
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        fail_ci_if_error: true

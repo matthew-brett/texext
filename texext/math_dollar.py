@@ -157,6 +157,20 @@ txt_dollars_to_math = partial(rst_dollars_to_math,
                               dollar_repl=MATH_MARKER + r"\1" + MATH_MARKER)
 
 
+def _get_rawsource(node):
+    # Docutils < 0.18 has rawsource attribute, otherwise, build it.
+    if hasattr(node, 'rawsource'):
+        return node.rawsource
+    return nodes.unescape(node, restore_backslashes=True)
+
+
+def _node_findall(root, node):
+    # Silence deprecation warning.
+    if hasattr(root, 'findall'):  # Later docutils.
+        return root.findall(node)
+    return root.traverse(node)
+
+
 class MathDollarTransform(Transform):
     """ Replace text between dollars with inline math nodes
     """
@@ -166,14 +180,14 @@ class MathDollarTransform(Transform):
     default_priority = 100
 
     def apply(self):
-        for node in self.document.traverse(nodes.Text):
+        for node in _node_findall(self.document, nodes.Text):
             self._process_node(node)
 
     def _process_node(self, node):
         # Avoid literals etc
         if not isinstance(node.parent, nodes.paragraph):
             return
-        in_str = node.rawsource
+        in_str = _get_rawsource(node)
         processed = txt_dollars_to_math(in_str)
         if MATH_MARKER not in processed:
             return
@@ -187,11 +201,11 @@ class MathDollarTransform(Transform):
             if i % 2:  # See sphinx.ext.mathbase
                 if SPHINX_ge_18:
                     new_node = math()
-                    new_node += nodes.Text(to_backslashes, to_backslashes)
+                    new_node += nodes.Text(to_backslashes)
                 else:
                     new_node = math(latex=to_backslashes)
             else:
-                new_node = nodes.Text(unescape(with_nulls), to_backslashes)
+                new_node = nodes.Text(unescape(with_nulls))
             new_node.parent = node.parent
             new_nodes.append(new_node)
         # Put new nodes into parent's list of children
