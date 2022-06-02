@@ -17,6 +17,15 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.6.7
+=====
+
+Bugfix release
+
+* Adapt to newer docutils.
+* Update minimum requirements.
+* Move to Github actions CI.
+
 0.6.6
 =====
 
