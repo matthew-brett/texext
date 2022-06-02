@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        pip_dep_var: "-r test-requirements"
+        pip_dep_var: ["-r test-requirements"]
         include:
           - python-version: 3.7
           - python-version: 3.8
