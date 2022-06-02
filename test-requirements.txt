@@ -1,6 +1,6 @@
 # Requirements for running tests
 -r requirements.txt
-sympy>=0.7
-matplotlib>=1.4.3
+sympy>=1.0
+matplotlib>=2.2.5
 pytest
 sphinxtesters>=0.2
