@@ -31,13 +31,17 @@ def check_re(pattern, text=None):
 # Docstring build regexp
 # sphinx 1.1.3 has <tt> for <code>
 # sphinx 1.7b0 has "math notranslate" for "math"
-FRAGMENTS = dict(code=r'(code|tt|span)',
-                 cclass=r'"(docutils literal( notranslate)?)"',
-                 math=r'"math( notranslate)?( nohighlight)?"')
+FRAGMENTS = dict(
+    mod_id=r'id="module-texext.tests.for_docstrings"',
+    code=r'(code|tt|span)',
+    cclass=r'"(docutils literal( notranslate)?)"',
+    math=r'"math( notranslate)?( nohighlight)?"',
+)
+
 DOCSTRING_RE = re.compile(
 r'<p>Here is the module docstring:</p>\n'
-r'(<span class="target" id="module-texext.tests.for_docstrings"></span>)?'
-r'<p( id="module-texext.tests.for_docstrings")?>A module to test docstring parsing with math such as '
+r'(<span class="target" {mod_id}></span><p>|<p {mod_id}>)'  # | for sphinx 7.2
+r'A module to test docstring parsing with math such as '
 r'<span class={math}'
 r'>\\\(\\gamma = \\cos\(\\alpha\)\\\)</span></p>\n'
 r'<p>Need to test other markup - so: '
