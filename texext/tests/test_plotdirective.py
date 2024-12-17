@@ -6,8 +6,6 @@ Test ability to combine plot_directive with mathcode
 from os.path import dirname, join as pjoin
 import re
 
-from six import PY3
-
 import sphinx
 
 SPHINX_ge_1p8 = sphinx.version_info[:2] >= (1, 8)
@@ -36,9 +34,7 @@ def format_math_block(name, latex, label=None, number=None,
     label = 'None' if label is None else label
     # Sphinx >= 1.5 has number="" clause in parameters
     number_part = ' number="{}"'.format(number) if SPHINX_ge_1p5 else ''
-    u_prefix = '' if PY3 or SPHINX_ge_1p7 else 'u'
-    id_part = '' if ids is None else """ids="[{}'{}']" """.format(
-        u_prefix, ids)
+    id_part = '' if ids is None else """ids="['{}']" """.format(ids)
     return (
         '<displaymath docname="{}" {}label="{}" '
         'latex="{}" nowrap="False"{}/>'.format(

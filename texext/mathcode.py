@@ -89,12 +89,10 @@ except ImportError:  # Sphinx < 1.8.0b1
 
 
 def eval_code(code_str, context):
-    # Avoid depending on six unless running mathcode directive
-    from six import exec_
     mod = parse(code_str, '<string>', 'exec')
     last_line = mod.body.pop() if isinstance(mod.body[-1], Expr) else None
     to_exec = compile(mod, '<string>', 'exec')
-    exec_(to_exec, None, context)
+    exec(to_exec, None, context)
     if last_line is None:
         return None
     to_eval = compile(Expression(last_line.value), '<string>', 'eval')
