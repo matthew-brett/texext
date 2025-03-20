@@ -30,9 +30,9 @@ def format_math_block(name, latex, label=None, number=None,
         id_part = '' if ids is None else 'ids="{}" '.format(ids)
         nowrap = 'no-wrap="False" ' if SPHINX_ge_8p2 else ''
         return (
-            '<math_block docname="{}" {}label="{}" '
-            '{}nowrap="False" number="{}" xml:space="preserve">{}'
-            '</math_block>'.format(name, id_part, label, nowrap, number, latex)
+            f'<math_block docname="{name}" {id_part}label="{label}" '
+            f'{nowrap}nowrap="False" number="{number}" '
+            f'xml:space="preserve">{latex}</math_block>'
         )
     number = 'None' if number is None else number
     label = 'None' if label is None else label
