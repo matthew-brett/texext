@@ -137,8 +137,8 @@ See https://github.com/matthew-brett/texext
 Released under the BSD two-clause license - see the file ``LICENSE`` in the
 source distribution.
 
-`travis-ci <https://travis-ci.org/matthew-brett/texext>`_ kindly tests the
-code automatically under Python versions 2.7, and 3.6 through 3.8.
+Github Actions kindly tests the code automatically under Python 3.9 through
+3.12.
 
 The latest released version is at https://pypi.python.org/pypi/texext
 

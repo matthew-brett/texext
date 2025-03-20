@@ -27,7 +27,7 @@ Releasing texext
 
   because this will be the output used by pypi_
 
-* Check `texext travis-ci`_.
+* Check `Texext GHA`_ outputs.
 
 * Once everything looks good, you are ready to upload the source release to
   PyPi.  See `setuptools intro`_.  Make sure you have a file
@@ -64,7 +64,7 @@ Releasing texext
     git push
     git push --tags
 
-.. _texext travis-ci: https://travis-ci.org/matthew-brett/texext
+.. _texext GHA: https://github.com/matthew-brett/texext/actions
 .. _texext isses: https://github.com/matthew-brett/texext/issues
 .. _versioneer: https://github.com/warner/python-versioneer
 .. _setuptools intro:
