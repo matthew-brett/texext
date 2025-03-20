@@ -10,6 +10,7 @@ from six import PY3
 
 import sphinx
 
+SPHINX_ge_8p2 = sphinx.version_info[:2] >= (8, 2)
 SPHINX_ge_1p8 = sphinx.version_info[:2] >= (1, 8)
 SPHINX_ge_1p7 = sphinx.version_info[:2] >= (1, 7)
 SPHINX_ge_1p5 = sphinx.version_info[:2] >= (1, 5)
@@ -27,10 +28,11 @@ def format_math_block(name, latex, label=None, number=None,
         number = 'True' if number is None else number
         label = 'True' if label is None else label
         id_part = '' if ids is None else 'ids="{}" '.format(ids)
+        nowrap = 'no-wrap="False" ' if SPHINX_ge_8p2 else ''
         return (
             '<math_block docname="{}" {}label="{}" '
-            'nowrap="False" number="{}" xml:space="preserve">{}'
-            '</math_block>'.format(name, id_part, label, number, latex)
+            '{}nowrap="False" number="{}" xml:space="preserve">{}'
+            '</math_block>'.format(name, id_part, label, nowrap, number, latex)
         )
     number = 'None' if number is None else number
     label = 'None' if label is None else label
