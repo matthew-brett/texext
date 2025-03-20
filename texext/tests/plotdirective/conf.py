@@ -15,7 +15,7 @@
 import sys
 from os.path import join as pjoin, abspath
 import sphinx
-from packaging.version import parse
+import packaging.version as pkgv
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
