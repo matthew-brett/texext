@@ -2,5 +2,6 @@
 -r requirements.txt
 sympy>=1.0
 matplotlib>=3.1
+packaging
 pytest
 sphinxtesters>=0.2.3

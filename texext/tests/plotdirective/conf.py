@@ -15,7 +15,7 @@
 import sys
 from os.path import join as pjoin, abspath
 import sphinx
-from distutils.version import LooseVersion
+from packaging.version import parse
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -104,7 +104,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-if LooseVersion(sphinx.__version__) >= LooseVersion('1.3'):
+if parse(sphinx.__version__) >= parse('1.3'):
     html_theme = 'classic'
 else:
     html_theme = 'default'
