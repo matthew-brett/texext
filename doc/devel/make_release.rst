@@ -55,8 +55,9 @@ Releasing texext
   `setuptools intro`_::
 
     git clean -fxd
-    python setup.py sdist --formats=zip
-    twine upload -s dist/texext*.zip
+    pip wheel -w dist .
+    pip install twine
+    twine upload dist/texext*.whl -u __token__
 
 * Upload the release commit and tag to github::
 
