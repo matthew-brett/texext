@@ -8,12 +8,14 @@ import re
 
 from six import PY3
 
+import docutils
 import sphinx
 
 SPHINX_ge_8p2 = sphinx.version_info[:2] >= (8, 2)
 SPHINX_ge_1p8 = sphinx.version_info[:2] >= (1, 8)
 SPHINX_ge_1p7 = sphinx.version_info[:2] >= (1, 7)
 SPHINX_ge_1p5 = sphinx.version_info[:2] >= (1, 5)
+DOCUTILS_ge_0p22 = docutils.__version_info__ >= (0, 22)
 
 from sphinxtesters import PageBuilder
 
@@ -28,10 +30,11 @@ def format_math_block(name, latex, label=None, number=None,
         number = 'True' if number is None else number
         label = 'True' if label is None else label
         id_part = '' if ids is None else 'ids="{}" '.format(ids)
-        nowrap = 'no-wrap="False" ' if SPHINX_ge_8p2 else ''
+        false = "0" if DOCUTILS_ge_0p22 else "False"
+        nowrap = f'no-wrap="{false}" ' if SPHINX_ge_8p2 else ''
         return (
             f'<math_block docname="{name}" {id_part}label="{label}" '
-            f'{nowrap}nowrap="False" number="{number}" '
+            f'{nowrap}nowrap="{false}" number="{number}" '
             f'xml:space="preserve">{latex}</math_block>'
         )
     number = 'None' if number is None else number
@@ -51,7 +54,7 @@ EXP_PLOT_AND_MATH = (
     '<title>Plot directive with mathcode</title>\n'
     '<paragraph>Some text</paragraph>\n'
     r'<literal_block '
-    '(force="False" )?'
+    f'(force="{0 if DOCUTILS_ge_0p22 else False}" )?'
     '(highlight_args="{}" )?'
     'language="python" '
     '(linenos="False" )?'

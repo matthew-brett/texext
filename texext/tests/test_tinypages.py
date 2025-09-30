@@ -2,9 +2,11 @@
 
 from os.path import (join as pjoin, dirname, isdir)
 
+import docutils
 import sphinx
 SPHINX_ge_1p5 = sphinx.version_info[:2] >= (1, 5)
 SPHINX_ge_1p8 = sphinx.version_info[:2] >= (1, 8)
+DOCUTILS_ge_0p22 = docutils.__version_info__ >= (0, 22)
 
 from sphinxtesters import PageBuilder
 
@@ -41,8 +43,9 @@ class TestTinyPages(PageBuilder):
             back_ref = (
                 '<paragraph>Refers to equation at '
                 '<pending_xref refdoc="some_math" refdomain="math" '
-                'refexplicit="False" reftarget="some-label" '
-                'reftype="eq" refwarn="True">'
+                f'refexplicit="{0 if DOCUTILS_ge_0p22 else False}" '
+                'reftarget="some-label" reftype="eq" '
+                f'refwarn="{1 if DOCUTILS_ge_0p22 else True}">'
                 '<literal classes="xref eq">some-label</literal>'
                 '</pending_xref>')
         else:
