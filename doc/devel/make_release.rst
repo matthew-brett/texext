@@ -29,35 +29,24 @@ Releasing texext
 
 * Check `Texext GHA`_ outputs.
 
-* Once everything looks good, you are ready to upload the source release to
-  PyPi.  See `setuptools intro`_.  Make sure you have a file
-  ``\$HOME/.pypirc``, of form::
-
-    [distutils]
-    index-servers =
-        pypi
-
-    [pypi]
-    username:your.pypi.username
-    password:your-password
-
-    [server-login]
-    username:your.pypi.username
-    password:your-password
-
 * Now tag the release.  This will also set the version (we are using
   versioneer_ to manage versions via git tags).  The ``-s`` flag below makes a
   signed tag::
 
     git tag -s 0.3
 
-* Now you can upload the source release to PyPI.  See
-  `setuptools intro`_::
+* Clean::
 
+    # Check no files outside version control that you want to keep
+    git status
+    # Nuke
     git clean -fxd
-    pip wheel -w dist .
-    pip install twine
-    twine upload dist/texext*.whl -u __token__
+
+* When ready::
+
+    pip install build twine
+    python -m build --sdist
+    twine upload dist/texext*tar.gz
 
 * Upload the release commit and tag to github::
 

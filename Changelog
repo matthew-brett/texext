@@ -17,6 +17,16 @@ Texext started life as the ``math_dollar`` Sphinx extension by Ondřej Čertík
 Releases
 ********
 
+0.6.8
+=====
+
+Infrastructure release
+
+* Adapt to newer (still) docutils for testing - Dmitry Shachnev
+* Adapt to newer Sphinx for testing - Jerry James
+* Adapt to retirement of distutils - Jerry James
+* Mark package as parallel safe - Ross Barnowski
+
 0.6.7
 =====
 
